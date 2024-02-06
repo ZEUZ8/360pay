@@ -3,7 +3,7 @@ import Page from '../components/userMaster/Page'
 
 const userMaste = () => {
   return (
-    <div>
+    <div >
       <Page/>
     </div>
   )

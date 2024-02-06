@@ -20,7 +20,7 @@ const Page = () => {
         <img src="/imgs/blueIcon.png" alt="icon" />
       </div>
       <div className="max-md:row-start-6 max-md:row-span-6 mx-12 pb-3">
-        <h1 className=" pb-2 xl:text-xl font-medium">Company Details</h1>
+        <h1 className=" pb-2 xl:text-xl font-medium">Site Details</h1>
         <div className="p-5 bg-white rounded-xl shadow-special">
           <Form />
         </div>

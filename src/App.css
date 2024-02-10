@@ -44,3 +44,7 @@ input[type="file"]{
 label{
   cursor: pointer;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}

@@ -1,43 +1,83 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import "../../App.css";
+import { FaRegEdit } from "react-icons/fa";
+import Form from "./Form";
+import { AppContext } from "../../Context/AppProvider";
 
-const Table = ({users}) => {
+const Table = () => {
+  const {users} = useContext(AppContext)
+  console.log(users,' tehe value')
+  const [modal, setModal] = useState(false);
+  const [row,setRow] = useState('')
+
+  const handleClick = (data)=>{
+    setModal(true)
+    setRow(data)
+  }
 
   return (
     <>
-      <div class="relative overflow-auto mt-2 rounded-lg "  style={{ maxHeight: "calc(100vh - 200px)" }}>
+      {modal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
+          <Form row={row} setModal={setModal}/>
+        </div>
+      )}
+      <div class="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
         <table class="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm">
-          <thead class="text-xs text-gray-700   bg-gray-800 ">
+          <thead class="text-xs text-gray-700   bg-gray-800 sticky top-0">
             <tr>
-              <th scope="col" class="px-6 py-3  text-white">
+              <th
+                scope="col"
+                class="px-6 py-3  text-white border-x border-white"
+              >
                 SNo
               </th>
-              <th scope="col" class="px-6 py-3  text-white">
+              <th
+                scope="col"
+                class="px-6 py-3  text-white border-x border-white"
+              >
                 userName
               </th>
-              <th scope="col" class="px-6 py-3 text-white">
+              <th
+                scope="col"
+                class="px-6 py-3 text-white border-x border-white"
+              >
                 Password
               </th>
-              <th scope="col" class="px-6 py-3 text-white">
+              <th
+                scope="col"
+                class="px-6 py-3 text-white border-x border-white"
+              >
                 Role
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-white border-x border-white text-center"
+              >
+                Action
               </th>
             </tr>
           </thead>
-          <tbody>
-            {users.map((user,i) => {
-                // console.log(user,' the user in tehcons')
+          <tbody className="overflow-y-auto">
+            {users.map((user, i) => {
+              // console.log(user,' the user in tehcons')
               return (
                 <>
                   <tr class="bg-white border-b dark:border-gray-700">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                      class="px-6 py-4 font-medium text-gray-500 whitespace-nowrap grid"
                     >
-                      {i+1}
+                      {i + 1}
                     </th>
                     <td class="px-6 py-4">{user?.userName}</td>
                     <td class="px-6 py-4">{user.password}</td>
                     <td class="px-6 py-4">{user.privilage} </td>
-                    {/* <td class="px-6 py-4">delete</td> */}
+                    <td class="px-9 py-4 flex justify-center items-center text-gray-400 active:text-gray-800"
+                    onClick={()=>handleClick(user)}
+                    >
+                      <FaRegEdit />
+                    </td>
                   </tr>
                 </>
               );

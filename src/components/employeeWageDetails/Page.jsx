@@ -9,9 +9,11 @@ const Page = () => {
   const [show, setShow] = useState(true);
   const [suggestionCount, setSuggestionCound] = useState(0);
 
+
+
   // function that attached to the Detail click in the userWageDetails and waiting for the funtionality
   const handleClick = () => {
-    console.log("clicked on the History button waiting for the functionality");
+    console.log("function for api call");
   };
 
   const fetchData = (value) => {
@@ -39,7 +41,8 @@ const Page = () => {
 
   const handlePress = (evnt) => {
     if (results) {
-      if (evnt.keyCode === 40 && suggestionCount < results.length) {
+      if (evnt.keyCode === 40 && suggestionCount < results.length-1) {
+        console.log(' the name')
         setSuggestionCound((prev) => prev + 1);
       }
       if (evnt.keyCode === 38 && suggestionCount > 0) {

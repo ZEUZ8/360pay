@@ -7,8 +7,6 @@ const SearchResultsList = ({setResults,results,setInput,suggestionCount}) => {
     setInput(data.name)
     setResults([])
   }
-
-
   
   return (
     <div className={` w-full bg-gray-50  shadow-special flex flex-col rounded-lg max-h-[300px]  overflow-y-scroll scrollbar-hide  text-gray-400 p-2`}>

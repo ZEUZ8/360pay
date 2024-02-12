@@ -3,23 +3,24 @@ import "../../App.css";
 import { FaRegEdit } from "react-icons/fa";
 import Form from "./Form";
 import { AppContext } from "../../Context/AppProvider";
+import ToggleSwitch from "./ToggleSwitch";
 
 const Table = () => {
-  const {users} = useContext(AppContext)
-  console.log(users,' tehe value')
+  const { users } = useContext(AppContext);
+  console.log(users, " tehe value");
   const [modal, setModal] = useState(false);
-  const [row,setRow] = useState('')
+  const [row, setRow] = useState("");
 
-  const handleClick = (data)=>{
-    setModal(true)
-    setRow(data)
-  }
+  const handleClick = (data) => {
+    setModal(true);
+    setRow(data);
+  };
 
   return (
     <>
       {modal && (
         <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
-          <Form row={row} setModal={setModal}/>
+          <Form row={row} setModal={setModal} />
         </div>
       )}
       <div class="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
@@ -52,6 +53,12 @@ const Table = () => {
               </th>
               <th
                 scope="col"
+                class="px-6 py-3 text-white border-x border-white"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
                 class="px-6 py-3 text-white border-x border-white text-center"
               >
                 Action
@@ -63,18 +70,24 @@ const Table = () => {
               // console.log(user,' the user in tehcons')
               return (
                 <>
-                  <tr class="bg-white border-b dark:border-gray-700">
+                  <tr class="bg-white border-b dark:border-gray-700 ">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium text-gray-500 whitespace-nowrap grid"
+                      class="px-6 py-4 font-medium text-gray-500 whitespace-nowrap flex justify-center"
                     >
                       {i + 1}
                     </th>
                     <td class="px-6 py-4">{user?.userName}</td>
-                    <td class="px-6 py-4">{user.password}</td>
-                    <td class="px-6 py-4">{user.privilage} </td>
-                    <td class="px-9 py-4 flex justify-center items-center text-gray-400 active:text-gray-800"
-                    onClick={()=>handleClick(user)}
+                    <td class="px-6 py-4">{user?.password}</td>
+                    <td class="px-6 py-4">{user?.privilage} </td>
+                    <td>
+                      <div className=" flex justify-center h-full">
+                        <ToggleSwitch currentUser={user}/>
+                      </div>
+                    </td>
+                    <td
+                      class="px-9 py-4 flex justify-center items-center text-gray-400 active:text-gray-800 "
+                      onClick={() => handleClick(user)}
                     >
                       <FaRegEdit />
                     </td>

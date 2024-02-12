@@ -8,8 +8,8 @@ const Page = () => {
 
   useEffect(() => {    
     setUsers([
-      { userName: "sinan", password: "sina@123", privilage: "admin",userId:"sinan12" },
-      { userName: "fasal", password: "fasal@123", privilage: "user",userId:"fasal12" },
+      { userName: "sinan", password: "sina@123", privilage: "admin",userId:"sinan12" ,status:false},
+      { userName: "fasal", password: "fasal@123", privilage: "user",userId:"fasal12",status:false },
     ]);
   }, []);
 

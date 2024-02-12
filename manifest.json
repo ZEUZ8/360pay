@@ -1,0 +1,31 @@
+{
+    "name":"365 Pay",
+    "short_name":"365Pay",
+    "start_url":"/",
+    "display":"standalone",
+    "theme_color":"#ffff",
+    "background_color":"#ffffff",
+    "icons":[
+        {
+            "src":"/imgs/icon-128x128.png",
+            "type":"image/png",
+            "sizes":"128x128"
+        },
+        {
+            "src":"/imgs/icon-144x144.png",
+            "type":"image/png",
+            "sizes":"144x144"
+        },
+        {
+            "src":"/imgs/icon-152x152.png",
+            "type":"image/png",
+            "sizes":"152x152"
+        },
+        {
+            "src":"/imgs/maskable_icon.png",
+            "typ":"image/png",
+            "sizes":"192X192",
+            "purpose":"maskable"
+        }
+    ]
+}

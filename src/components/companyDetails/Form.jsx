@@ -31,7 +31,7 @@ const Form = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           id="clientId"
-          class={`${errors.clientId && touched.clientId && `placeholder:text-pink-500`} bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          class={`${errors.clientId && touched.clientId && `placeholder:text-red-500`} bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
           placeholder={errors.clientId && touched.clientId ? `Client Id  ${errors.clientId}` : "Client ID"}
         />
         {errors.clientId && touched.clientId && values.clientId.length>0 &&(
@@ -45,7 +45,7 @@ const Form = () => {
           value={values.name}
           onBlur={handleBlur}
           onChange={handleChange}
-          class={`${errors.name && touched.name && `placeholder:text-pink-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          class={`${errors.name && touched.name && `placeholder:text-red-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.name && touched.name ? `Name  ${errors.name}` : "Name"}
           // required
         />
@@ -60,7 +60,7 @@ const Form = () => {
           value={values.address}
           onBlur={handleBlur}
           onChange={handleChange}
-          class={`${errors.address && touched.address && `placeholder:text-pink-500`} bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          class={`${errors.address && touched.address && `placeholder:text-red-500`} bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.address && touched.address ? `Address  ${errors.address}`: "Address"}
           // required
         />
@@ -75,7 +75,7 @@ const Form = () => {
           value={values.mobile}
           onBlur={handleBlur}
           onChange={handleChange}
-          class={`${errors.mobile && touched.mobile && `placeholder:text-pink-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          class={`${errors.mobile && touched.mobile && `placeholder:text-red-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.mobile && touched.mobile ? `Mobile  ${errors.mobile}` : "Mobile"}
           // required
         />
@@ -90,7 +90,7 @@ const Form = () => {
           value={values.ownerName}
           onBlur={handleBlur}
           onChange={handleChange}
-          class={`${errors.ownerName && touched.ownerName && `placeholder:text-pink-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   `}
+          class={`${errors.ownerName && touched.ownerName && `placeholder:text-red-500`}  bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   `}
           placeholder={errors.ownerName && touched.ownerName ? `Owner Name  ${errors.ownerName}` : "Ownder Name"}
           // required
         />

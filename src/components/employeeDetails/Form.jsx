@@ -66,8 +66,9 @@ const Form = () => {
   // console.log(photo,' the photo')
   const onSubmit = () => {
     // console.log('the name is in the console')
-    console.log("the console is not working");
-    navigate("/userMaster");
+    if(photo.length > 0 && documentFile.length > 0){
+      navigate("/userMaster");
+    }
   };
 
   const { values, errors, touched, handleChange, handleSubmit, handleBlur } =

@@ -3,7 +3,7 @@ import "../../App.css";
 import { IoIosClose } from "react-icons/io";
 
 import { employeeDetailsValidation } from "../../validation/employeeDetails";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 const Form = () => {

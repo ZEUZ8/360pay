@@ -8,6 +8,7 @@ import SiteDetailsPage from './pages/SiteDetailsPage'
 import EmployeeDetailsPage from './pages/EmployeeDetailsPage'
 import UserMasterPage from './pages/UserMasterPage'
 import WageDetailsPage from './pages/WageDetailsPage'
+import GougeChartPage from './pages/GougeChartPage'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +22,7 @@ function App() {
         <Route path="/employeeDetails" element={<EmployeeDetailsPage/>}></Route>
         <Route path="/userMaster" element={<UserMasterPage/>}></Route>
         <Route path="/wage" element={<WageDetailsPage/>}></Route>
+        <Route path="/gougeChart" element={<GougeChartPage/>}></Route>
       </Routes>
     </main>
     </BrowserRouter>

@@ -29,8 +29,8 @@ const Page = () => {
           />
         </div>
         <div className="flex gap-0 justify-center items-center">
-          <h1 className=" p-3 text-center max-w-[9rem] overflow-x-auto whitespace-nowrap">{name}</h1>
-          <img className={`w-4 h-4 ${!name.length>0 && 'mt-3'}`} src="./imgs/yes.png" alt="verified" />
+          <h1 className=" p-3 text-center max-w-[9rem] overflow-x-auto whitespace-nowrap">{name ? name : "Name"}</h1>
+          <img className={`w-4 h-4 `} src="./imgs/yes.png" alt="verified" />
         </div>
       </div>
 

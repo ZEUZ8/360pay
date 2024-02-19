@@ -55,11 +55,11 @@ const Form = ({ handleUser, row, setModal,updateUser}) => {
           <IoIosClose />
         </div>
       )}
-      <div class="mb-4 ">
+      <div className="mb-4 ">
         <input
           type="text"
           id="userName"
-          class="bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 "
+          className="bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 "
           value={values.userName}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -69,11 +69,11 @@ const Form = ({ handleUser, row, setModal,updateUser}) => {
           <h1 className="text-xs pt-2 text-rose-500 ">{errors.userName}</h1>
         )}
       </div>
-      <div class="mb-4">
+      <div className="mb-4">
         <input
           type="text"
           id="password"
-          class="bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5"
+          className="bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5"
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -83,13 +83,13 @@ const Form = ({ handleUser, row, setModal,updateUser}) => {
           <h1 className="text-xs pt-2 text-rose-500 ">{errors.password}</h1>
         )}
       </div>
-      <div class="mb-4">
+      <div className="mb-4">
         <select
           id="privilage"
           value={values.privilage}
           onChange={handleChange}
           onBlur={handleBlur}
-          class="bg-gray-100   text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  "
+          className="bg-gray-100   text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  "
         >
           <option value="">Privilage</option>
           {roles.map((role) => (
@@ -106,7 +106,7 @@ const Form = ({ handleUser, row, setModal,updateUser}) => {
         
           <button
             type="button"
-            class={` text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center `}
+            className={` text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center `}
             onClick={handleUpdation}
           >
             Update
@@ -114,7 +114,7 @@ const Form = ({ handleUser, row, setModal,updateUser}) => {
       ) : (
         <button
           type="button"
-          class={` text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center `}
+          className={` text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center `}
           onClick={handleSubmit}
         >
           Create

@@ -23,43 +23,43 @@ const Table = () => {
           <Form row={row} setModal={setModal} />
         </div>
       )}
-      <div class="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
-        <table class="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm">
-          <thead class="text-xs text-gray-700   bg-gray-800 sticky top-0">
+      <div className="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
+        <table className="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm">
+          <thead className="text-xs text-gray-700   bg-gray-800 sticky top-0">
             <tr>
               <th
                 scope="col"
-                class="px-6 py-3  text-white border-x border-white"
+                className="px-6 py-3  text-white border-x border-white"
               >
                 SNo
               </th>
               <th
                 scope="col"
-                class="px-6 py-3  text-white border-x border-white"
+                className="px-6 py-3  text-white border-x border-white"
               >
                 userName
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-white border-x border-white"
+                className="px-6 py-3 text-white border-x border-white"
               >
                 Password
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-white border-x border-white"
+                className="px-6 py-3 text-white border-x border-white"
               >
                 Role
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-white border-x border-white"
+                className="px-6 py-3 text-white border-x border-white"
               >
                 Status
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-white border-x border-white text-center"
+                className="px-6 py-3 text-white border-x border-white text-center"
               >
                 Action
               </th>
@@ -70,23 +70,23 @@ const Table = () => {
               // console.log(user,' the user in tehcons')
               return (
                 <>
-                  <tr class="bg-white border-b dark:border-gray-700 ">
+                  <tr className="bg-white border-b dark:border-gray-700 ">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium text-gray-500 whitespace-nowrap flex justify-center"
+                      className="px-6 py-4 font-medium text-gray-500 whitespace-nowrap flex justify-center"
                     >
                       {i + 1}
                     </th>
-                    <td class="px-6 py-4">{user?.userName}</td>
-                    <td class="px-6 py-4">{user?.password}</td>
-                    <td class="px-6 py-4">{user?.privilage} </td>
+                    <td className="px-6 py-4">{user?.userName}</td>
+                    <td className="px-6 py-4">{user?.password}</td>
+                    <td className="px-6 py-4">{user?.privilage} </td>
                     <td>
                       <div className=" flex justify-center h-full">
                         <ToggleSwitch currentUser={user}/>
                       </div>
                     </td>
                     <td
-                      class="px-9 py-4 flex justify-center items-center text-gray-400 active:text-gray-800 "
+                      className="px-9 py-4 flex justify-center items-center text-gray-400 active:text-gray-800 "
                       onClick={() => handleClick(user)}
                     >
                       <FaRegEdit />

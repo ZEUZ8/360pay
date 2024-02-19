@@ -21,9 +21,9 @@ function ToggleSwitch({ currentUser }) {
 
   return (
     <div>
-      <label class="switch">
+      <label className="switch">
         <input type="checkbox" value={status} onChange={handleChange} />
-        <span class="slider"></span>
+        <span className="slider"></span>
       </label>
     </div>
   );

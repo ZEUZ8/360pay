@@ -1,34 +1,47 @@
-import React, { useState } from 'react'
-import Form from './Form'
+import React, { useContext, useEffect, useState } from "react";
+import Form from "./Form";
+import { IoIosClose } from "react-icons/io";
+import { AppContext } from "../../Context/AppProvider";
 
 const Page = () => {
-  const [image,setImage] = useState("https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dperson%2Bicon&psig=AOvVaw18SpiNmF-6xNyJi0-vWBi8&ust=1707209407268000&source=images&cd=vfe&opi=89978449&ved=0CBUQjhxqFwoTCKjolOTok4QDFQAAAAAdAAAAABAF")
-  const [userName,setUsername] = useState("name")
+  const {photo,setPhoto,name} = useContext(AppContext)
+  const [image, setImage] = useState("/imgs/person.png");
+  const [emptyUser,setEmptyUser] = useState("/imgs/emptyUser.png")
+  // const [userName, setUsername] = useState("Name");
 
-  const handleImage = ()=>{
-    console.log("user over here")
-  }
+  const handleImage = () => {
+    setImage(emptyUser)
+    setPhoto('')
+  };
 
   return (
     <div className="grid max-md:grid-rows-12 md:grid-cols-2 h-[100vh] md:justify-center md:items-center ">
-      
-    <div className="max-md:row-start-2   max-md:row-span-3 grid items-end justify-center pb-5  ">
-      <img className='w-40 h-40 bg-red-600 rounded-full' src="/imgs/person.png" alt="icon" />
-      <div className='flex gap-0 justify-center items-center'>
-      <h1 className=' p-3 text-center'>{userName}</h1>
-      <img className='w-4 h-4' src="./imgs/yes.png" alt="verified" />
+      <div className="max-md:row-start-2   max-md:row-span-3 grid items-end justify-center pb-5  ">
+        <div className="relative">
+          <IoIosClose
+            className="absolute top-0  right-0 bg-white rounded-full shadow-lg hover:text-rose-600"
+            onClick={handleImage}
+          />
+          <img
+            className="w-40 h-40  rounded-full bg-stone-200"
+            src={image}
+            alt="icon"
+          />
+        </div>
+        <div className="flex gap-0 justify-center items-center">
+          <h1 className=" p-3 text-center max-w-[9rem] overflow-x-auto whitespace-nowrap">{name}</h1>
+          <img className={`w-4 h-4 ${!name.length>0 && 'mt-3'}`} src="./imgs/yes.png" alt="verified" />
+        </div>
+      </div>
+
+      <div className="pt-5 max-md:row-span-6 mx-12 pb-3">
+        <h1 className=" pb-3 xl:text-xl font-medium">Employee Details</h1>
+        <div className="p-5 bg-white rounded-xl shadow-special">
+          <Form setImage={setImage} image={image}/>
+        </div>
       </div>
     </div>
+  );
+};
 
-    <div className="pt-5 max-md:row-span-6 mx-12 pb-3">
-      <h1 className=" pb-3 xl:text-xl font-medium">Employee Details</h1>
-      <div className="p-5 bg-white rounded-xl shadow-special">
-        <Form />
-      </div>
-    </div>
-
-  </div>
-  )
-}
-
-export default Page
+export default Page;

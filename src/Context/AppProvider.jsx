@@ -8,9 +8,15 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
 
   const [users, setUsers] = useState([]);
+  const [photo, setPhoto] = useState('');
+  const [name,setUserName] = useState('Name');
 
   const value = {
+    photo,
     users,
+    name,
+    setUserName,
+    setPhoto,
     setUsers,
   };
 

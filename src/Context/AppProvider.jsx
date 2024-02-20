@@ -9,7 +9,7 @@ const AppProvider = ({ children }) => {
 
   const [users, setUsers] = useState([]);
   const [photo, setPhoto] = useState('');
-  const [name,setUserName] = useState('Name');
+  const [name,setUserName] = useState('');
 
   const value = {
     photo,

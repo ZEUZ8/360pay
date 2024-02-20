@@ -20,8 +20,8 @@ function ToggleSwitch({ currentUser }) {
 
 
   return (
-    <div>
-      <label className="switch">
+    <div className="switch-container z-10">
+      <label className="switch bg-pink-300 z-5">
         <input type="checkbox" value={status} onChange={handleChange} />
         <span className="slider"></span>
       </label>

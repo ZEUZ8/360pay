@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "../../App.css";
 import { IoIosClose } from "react-icons/io";
 
@@ -26,13 +26,17 @@ const Form = ({ image, setImage }) => {
   const [fileError, setFileError] = useState("");
   const [format, setFormat] = useState("");
 
+  const fileInputRef = useRef(null);
+
   const handlePhotoChange = (event) => {
     event.preventDefault();
+    console.log(event.currentTarget.value, " the event value");
     const file = event.target.files[0];
     const error = ImageValidation(file);
     if (error) {
       setPhotoError(error);
     } else {
+      setPhotoError('')
       if (file) {
         setPhotoName(file.name);
         const reader = new FileReader();
@@ -66,8 +70,8 @@ const Form = ({ image, setImage }) => {
   };
 
   useEffect(() => {
-    console.log("-------the name", fileError);
-  }, [fileError]);
+    // console.log(photo,'the photo', values.photo,' the photo')
+  }, [photo]);
 
   // useEffect(() => {
   //   console.log(documentFile, " the file in theconse");
@@ -98,6 +102,12 @@ const Form = ({ image, setImage }) => {
   useEffect(() => {
     setUserName(values.name);
   }, [values.name]);
+
+  const clearFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the value of file input
+    }
+  };
 
   return (
     <form>
@@ -214,52 +224,47 @@ const Form = ({ image, setImage }) => {
           </h1>
         )}
       </div>
-      <>
-        <div className=" grid grid-cols-5 mb-3 border border-6  rounded-lg  relative">
-          <p className="absolute top-[-8px] bg-white rounded-full px-3 font-light text-gray-500 left-2 text-xs p-0 m-0 ">
-            Photo
-          </p>
-          <input
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
-               bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="photo"
-            accept="image/*"
-            type="file"
-            onChange={handlePhotoChange}
-          />
-          <div className=" text-xs col-span-3  grid  items-center p-3">
-            <p
-              className={`font-light ${
-                photo.length ? "text-gray-400" : `text-rose-500`
-              } `}
-            >
-              {photoError ? photoError : "Choose photo to Upload"}
-            </p>
-          </div>
-          <div
-            className="col-span-2 text-center grid  items-center font-medium rounded-lg  text-white bg-[#66BB6C] h-full cursor-pointer"
-            htmlFor="photo"
-            onClick={() => document.getElementById("photo").click()}
+
+          {/* image uploading section */}
+      <div className=" grid grid-cols-5 mb-3 border border-6  rounded-lg  relative">
+        <p className="absolute top-[-8px] bg-white rounded-full px-3 font-light text-gray-500 left-2 text-xs p-0 m-0 ">
+          Photo
+        </p>
+        <input
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
+               bg-gray-50  dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          id="photo"
+          accept="image/*"
+          type="file"
+          ref={fileInputRef}
+          onChange={(event) => {
+            handlePhotoChange(event);
+            clearFileInput();
+          }}
+        />
+        <div className=" text-xs col-span-3  grid  items-center p-3">
+          <p
+            className={`font-light ${
+              !photo || photoError ? "text-rose-400" : `text-gray-500`
+            } `}
           >
-            <h1 className="">Upload</h1>
-          </div>
+            {photoError.length > 0 ? photoError : photo ? photoName :  "Choose photo to Upload"}
+          </p>
         </div>
-      </>
-
-      {/* {documentFile && (
-        <div className="flex  w-full pb-3   max-w-full overflow-x-auto">
-          <div className="relative">
-            <IoIosClose
-              className="absolute top-1 mr-1 right-2 bg-white rounded-full shadow-lg hover:text-rose-600"
-              onClick={() => setDocumentFile("")}
-            />
-            <Document file={documentFile}>
-              <Page pageNumber={1} />
-            </Document>
-          </div>
+        <div
+          className="col-span-2 text-center grid  items-center rounded-lg   bg-[#66BB6C] h-full cursor-pointer active:animate-bounce"
+          htmlFor="photo"
+          onClick={() => {
+            document.getElementById("photo").click(() => console.log("name"));
+          }}
+        >
+          <h1 className=" font-medium text-white hover:animate-pulse">
+            Upload
+          </h1>
         </div>
-      )} */}
+      </div>
 
+      {/* file uplading section  */}
       <div className=" grid grid-cols-5 mb-3 border border-6  rounded-lg relative">
         <p className="absolute top-[-8px] bg-white rounded-full px-3 font-light text-gray-500 left-2 text-xs p-0 m-0 ">
           Document
@@ -269,7 +274,11 @@ const Form = ({ image, setImage }) => {
           id="document"
           accept=".pdf"
           type="file"
-          onChange={handleDocumentChange}
+          ref={fileInputRef}
+          onChange={(event)=>{
+            handleDocumentChange(event);
+            clearFileInput();
+          }}
         />
         <div
           className={`p-3 text-xs col-span-3  grid  items-center ${
@@ -285,11 +294,11 @@ const Form = ({ image, setImage }) => {
           )}
         </div>
         <div
-          className="col-span-2 text-center grid  items-center  rounded-lg text-white bg-[#66BB6C] h-full cursor-pointer"
+          className="col-span-2 text-center grid  items-center  rounded-lg  bg-[#66BB6C] active:animate-bounce h-full cursor-pointer"
           htmlFor="file_input"
           onClick={() => document.getElementById("document").click()}
         >
-          <h1 className="">Attach File</h1>
+          <h1 className="text-white hover:animate-pulse">Attach File</h1>
           <input id="file_input2" type="file" />
         </div>
       </div>

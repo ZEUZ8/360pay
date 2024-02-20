@@ -25,7 +25,7 @@ const Table = () => {
       )}
       <div className="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
         <table className="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm">
-          <thead className="text-xs text-gray-700   bg-gray-800 sticky top-0">
+          <thead className="text-xs text-gray-700   bg-gray-800 sticky top-0 z-15">
             <tr>
               <th
                 scope="col"
@@ -80,9 +80,9 @@ const Table = () => {
                     <td className="px-6 py-4">{user?.userName}</td>
                     <td className="px-6 py-4">{user?.password}</td>
                     <td className="px-6 py-4">{user?.privilage} </td>
-                    <td>
-                      <div className=" flex justify-center h-full">
-                        <ToggleSwitch currentUser={user}/>
+                    <td className="">
+                      <div className=" flex justify-center h-[10%]">
+                        <ToggleSwitch currentUser={user} className="z-5"/>
                       </div>
                     </td>
                     <td

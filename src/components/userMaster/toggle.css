@@ -1,3 +1,9 @@
+.switch-container {
+    display: flex;
+    justify-content: center; /* Center the toggle switch horizontally */
+    align-items: center; /* Center the toggle switch vertically */
+    height: 100%; /* Set the height of the container to match the table cell height */
+  }
 /* The switch - the box around the slider */
 .switch {
     font-size: 17px;

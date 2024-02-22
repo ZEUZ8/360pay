@@ -19,11 +19,11 @@ const Table = () => {
   return (
     <>
       {modal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
-          <Form row={row} setModal={setModal} />
+        <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70  z-50">
+          <Form className="" row={row} setModal={setModal} />
         </div>
       )}
-      <div className="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg ">
+      <div className="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg max-h-[20rem]">
         <table className="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm">
           <thead className="text-xs text-gray-700   bg-gray-800 sticky top-0 z-15">
             <tr>

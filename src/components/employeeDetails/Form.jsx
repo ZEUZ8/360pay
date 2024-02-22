@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "../../App.css";
-import { IoIosClose } from "react-icons/io";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { IoIosClose } from "react-icons/io";
 import { employeeDetailsValidation } from "../../validation/employeeDetails";
 import { Formik, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +13,7 @@ import {
   FileValidation,
   ImageValidation,
 } from "../../validation/fileValidation";
+import { uploadImage } from "../../Api/services/userServices";
 
 const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
@@ -30,19 +34,17 @@ const Form = ({ image, setImage }) => {
 
   const handlePhotoChange = (event) => {
     event.preventDefault();
-    console.log(event.currentTarget.value, " the event value");
     const file = event.target.files[0];
     const error = ImageValidation(file);
     if (error) {
       setPhotoError(error);
     } else {
-      setPhotoError('')
+      setPhotoError("");
       if (file) {
-        setPhotoName(file.name);
+        setPhotoName(file);
         const reader = new FileReader();
         reader.onload = () => {
-          // FileReader.onload is triggered when the file is read successfully
-          setPhoto(reader.result); // Store the image data in state
+          setPhoto(reader.result);
           setImage(reader.result);
         };
         reader.readAsDataURL(file); // Read the contents of the file as a data URL
@@ -59,7 +61,7 @@ const Form = ({ image, setImage }) => {
     } else {
       setFileError("");
       if (file) {
-        setDocumentName(file.name);
+        setDocumentName(file);
         const reader = new FileReader();
         reader.onload = () => {
           setDocumentFile(reader.result);
@@ -69,19 +71,24 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  useEffect(() => {
-    // console.log(photo,'the photo', values.photo,' the photo')
-  }, [photo]);
-
-  // useEffect(() => {
-  //   console.log(documentFile, " the file in theconse");
-  // }, [documentFile]);
-
-  // console.log(photo,' the photo')
-  const onSubmit = () => {
-    // console.log('the name is in the console')
+  const onSubmit = async () => {
     if (photo && documentFile) {
-      navigate("/userMaster");
+      console.log(true);
+      try {
+        const response = await uploadImage(photoName, documentName);
+        if (response?.data?.ImageUploadStatus && response.status === 200) {
+          toast(response?.data?.Message, {
+            autoClose: "500",
+            onClose: () => {
+              navigate("/userMaster");
+            },
+          });
+          setPhoto('')
+        }
+      } catch (err) {
+        console.log(err, " the erer");
+      }
+      // navigate("/userMaster");
     }
   };
 
@@ -111,6 +118,7 @@ const Form = ({ image, setImage }) => {
 
   return (
     <form>
+      <ToastContainer />
       <div
         className={`mb-4 ${
           errors.name && touched.name && values.name.length > 0 && "mb-2"
@@ -225,7 +233,7 @@ const Form = ({ image, setImage }) => {
         )}
       </div>
 
-          {/* image uploading section */}
+      {/* image uploading section */}
       <div className=" grid grid-cols-5 mb-3 border border-6  rounded-lg  relative">
         <p className="absolute top-[-8px] bg-white rounded-full px-3 font-light text-gray-500 left-2 text-xs p-0 m-0 ">
           Photo
@@ -248,7 +256,11 @@ const Form = ({ image, setImage }) => {
               !photo || photoError ? "text-rose-400" : `text-gray-500`
             } `}
           >
-            {photoError.length > 0 ? photoError : photo ? photoName :  "Choose photo to Upload"}
+            {photoError.length > 0
+              ? photoError
+              : photo
+              ? photoName?.name
+              : "Choose photo to Upload"}
           </p>
         </div>
         <div
@@ -275,7 +287,7 @@ const Form = ({ image, setImage }) => {
           accept=".pdf"
           type="file"
           ref={fileInputRef}
-          onChange={(event)=>{
+          onChange={(event) => {
             handleDocumentChange(event);
             clearFileInput();
           }}
@@ -288,7 +300,7 @@ const Form = ({ image, setImage }) => {
           {fileError.length > 0 ? (
             <p className="font-light">{fileError}</p>
           ) : documentFile ? (
-            <p className="font-ligh">{documentName}</p>
+            <p className="font-ligh">{documentName.name}</p>
           ) : (
             <p className="font-light">Choose file to Upload</p>
           )}

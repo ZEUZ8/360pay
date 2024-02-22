@@ -30,7 +30,7 @@ const Page = () => {
           <h1 className=" pb-2 xl:text-xl font-medium">User Master</h1>
           <Form handleUser={handleUser} />
         </div>
-        <div className="mt-5 pt-5 max-md:row-span-4  w-full grid md:items-start  p-3">
+        <div className="mt-5 pt-5 max-md:row-span-4  w-full grid md:items-start  p-3 ">
           <Table  />
         </div>
       </div>

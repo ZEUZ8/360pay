@@ -13,7 +13,7 @@ import {
   FileValidation,
   ImageValidation,
 } from "../../validation/fileValidation";
-import { uploadImage } from "../../Api/services/userServices";
+import { deleteImage, uploadImage } from "../../Api/services/userServices";
 
 const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
@@ -28,11 +28,11 @@ const Form = ({ image, setImage }) => {
   const [documentFile, setDocumentFile] = useState("");
   const [documentName, setDocumentName] = useState("");
   const [fileError, setFileError] = useState("");
-  const [format, setFormat] = useState("");
+  const [prevFile, setPrevFile] = useState("");
 
   const fileInputRef = useRef(null);
 
-  const handlePhotoChange = (event) => {
+  const handlePhotoChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
     const error = ImageValidation(file);
@@ -42,19 +42,21 @@ const Form = ({ image, setImage }) => {
       setPhotoError("");
       if (file) {
         setPhotoName(file);
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPhoto(reader.result);
-          setImage(reader.result);
-        };
-        reader.readAsDataURL(file); // Read the contents of the file as a data URL
+        const response = await uploadImage(file);
+        console.log(response,' the response in the conde')
+        if (response?.data?.ImageUploadStatus && response?.status === 200) {
+          setPhoto(response?.data?.FileDetails[0].Filename);
+          setImage(response?.data?.FileDetails[0])
+        }
       }
     }
   };
 
-  const handleDocumentChange = (event) => {
+  // Function for handling the Document/File updation OnChange
+  const handleDocumentChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
+    console.log(file,' the file')
     const error = FileValidation(file);
     if (error) {
       setFileError(error);
@@ -62,33 +64,21 @@ const Form = ({ image, setImage }) => {
       setFileError("");
       if (file) {
         setDocumentName(file);
-        const reader = new FileReader();
-        reader.onload = () => {
-          setDocumentFile(reader.result);
-        };
-        reader.readAsDataURL(file); // Read the contents of the file as a data URL
+        if(documentFile){
+          const response = await deleteImage(documentFile.Filename)
+          console.log(response)
+        }
+        const response = await uploadImage(documentName);
+        if (response?.data?.ImageUploadStatus && response.status === 200) {
+          setDocumentFile(response.data.FileDetails[0]);
+        }
       }
     }
   };
 
   const onSubmit = async () => {
     if (photo && documentFile) {
-      console.log(true);
-      try {
-        const response = await uploadImage(photoName, documentName);
-        if (response?.data?.ImageUploadStatus && response.status === 200) {
-          toast(response?.data?.Message, {
-            autoClose: "500",
-            onClose: () => {
-              navigate("/userMaster");
-            },
-          });
-          setPhoto('')
-        }
-      } catch (err) {
-        console.log(err, " the erer");
-      }
-      // navigate("/userMaster");
+      navigate("/userMaster");
     }
   };
 
@@ -115,6 +105,10 @@ const Form = ({ image, setImage }) => {
       fileInputRef.current.value = ""; // Reset the value of file input
     }
   };
+
+  useEffect(()=>{
+    console.log(photo,' the phtot')
+  },[photo])
 
   return (
     <form>
@@ -266,9 +260,7 @@ const Form = ({ image, setImage }) => {
         <div
           className="col-span-2 text-center grid  items-center rounded-lg   bg-[#66BB6C] h-full cursor-pointer active:animate-bounce"
           htmlFor="photo"
-          onClick={() => {
-            document.getElementById("photo").click(() => console.log("name"));
-          }}
+          onClick={() => {document.getElementById("photo").click()}}
         >
           <h1 className=" font-medium text-white hover:animate-pulse">
             Upload

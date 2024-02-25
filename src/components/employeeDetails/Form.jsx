@@ -13,7 +13,11 @@ import {
   FileValidation,
   ImageValidation,
 } from "../../validation/fileValidation";
-import { deleteImage, uploadImage } from "../../Api/services/userServices";
+import {
+  UploadEmployeeDetails,
+  deleteImage,
+  uploadImage,
+} from "../../Api/services/userServices";
 
 const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
@@ -31,6 +35,7 @@ const Form = ({ image, setImage }) => {
   const [prevFile, setPrevFile] = useState("");
 
   const fileInputRef = useRef(null);
+  const photoInputRef = useRef(null);
 
   const handlePhotoChange = async (event) => {
     event.preventDefault();
@@ -42,11 +47,16 @@ const Form = ({ image, setImage }) => {
       setPhotoError("");
       if (file) {
         setPhotoName(file);
+        if (photo) {
+          (async function () {
+            await deleteImage(photo);
+          })();
+        }
         const response = await uploadImage(file);
-        console.log(response,' the response in the conde')
+        console.log(response, " consling the rsponse");
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
-          setImage(response?.data?.FileDetails[0])
+          setImage(response?.data?.FileDetails[0]);
         }
       }
     }
@@ -56,7 +66,7 @@ const Form = ({ image, setImage }) => {
   const handleDocumentChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
-    console.log(file,' the file')
+    console.log(file, " the file");
     const error = FileValidation(file);
     if (error) {
       setFileError(error);
@@ -64,11 +74,11 @@ const Form = ({ image, setImage }) => {
       setFileError("");
       if (file) {
         setDocumentName(file);
-        if(documentFile){
-          const response = await deleteImage(documentFile.Filename)
-          console.log(response)
+        if (documentFile) {
+          const response = await deleteImage(documentFile.Filename);
+          console.log(response);
         }
-        const response = await uploadImage(documentName);
+        const response = await uploadImage(file);
         if (response?.data?.ImageUploadStatus && response.status === 200) {
           setDocumentFile(response.data.FileDetails[0]);
         }
@@ -78,7 +88,28 @@ const Form = ({ image, setImage }) => {
 
   const onSubmit = async () => {
     if (photo && documentFile) {
-      navigate("/userMaster");
+      console.log(photo, documentFile, " the doucmen fiel and photo");
+      try {
+        const data = {
+          opMode: "I",
+          empId: 0,
+          empName: "Vishnu",
+          empMobileNo: "9744070765",
+          empAddress: "test address",
+          empWage: 10000,
+          empImageUrl: "https://picsum.photos/200/300",
+          empDocument: "https://picsum.photos/200/300",
+          isActive: true,
+        };
+        const response = await UploadEmployeeDetails(data);
+        console.log(response, " response in the page ");
+        if (response.data.isSuccess) {
+          navigate("/userMaster")
+          console.log(response, " response in the condition");
+        }
+      } catch (err) {
+        console.log(err, " error in the onSubmit of the employee Details");
+      }
     }
   };
 
@@ -106,9 +137,15 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  useEffect(()=>{
-    console.log(photo,' the phtot')
-  },[photo])
+  const clearPhotoInput = () => {
+    if (photoInputRef.current) {
+      photoInputRef.current.value = ""; // Reset the value of photo input
+    }
+  };
+
+  useEffect(() => {
+    console.log(photo, photoName, " the phtot");
+  }, [photo, photoName]);
 
   return (
     <form>
@@ -238,10 +275,10 @@ const Form = ({ image, setImage }) => {
           id="photo"
           accept="image/*"
           type="file"
-          ref={fileInputRef}
+          ref={photoInputRef}
           onChange={(event) => {
             handlePhotoChange(event);
-            clearFileInput();
+            clearPhotoInput();
           }}
         />
         <div className=" text-xs col-span-3  grid  items-center p-3">
@@ -260,7 +297,9 @@ const Form = ({ image, setImage }) => {
         <div
           className="col-span-2 text-center grid  items-center rounded-lg   bg-[#66BB6C] h-full cursor-pointer active:animate-bounce"
           htmlFor="photo"
-          onClick={() => {document.getElementById("photo").click()}}
+          onClick={() => {
+            document.getElementById("photo").click();
+          }}
         >
           <h1 className=" font-medium text-white hover:animate-pulse">
             Upload
@@ -312,7 +351,7 @@ const Form = ({ image, setImage }) => {
         type="button"
         onClick={handleSubmit}
       >
-        History
+        Save
       </button>
     </form>
   );

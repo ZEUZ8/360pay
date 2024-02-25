@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosUserInstance, imageInstance } from "../axios";
+import { axiosSiteDetailsInstance, axiosUserInstance, imageInstance } from "../axios";
 const token =
   "w^0V6jJamvLyaBy5VEYQ2x4gzwrx5BifP6wjB/hQDNmDFSJ2//4/4oze7iJuiFrd";
 // export const uploadImage = async(image)=>{
@@ -35,7 +35,7 @@ export const uploadImage = async (file) => {
 export const deleteImage = async (file) => {
   console.log(file, " consoling in the service function");
   try {
-    const response = await axios.delete("https://sacrosys.net:6662/api/9132/DeleteImages", {
+    const response = await imageInstance.delete("/DeleteImages", {
       headers: {
         Token: token,
       },
@@ -47,6 +47,31 @@ export const deleteImage = async (file) => {
     return response.data;
   } catch (err) {
     console.log(err, "the err message");
-    throw err;
+    return err;
   }
 };
+
+
+export const uploadSiteDetails = async (value)=>{
+  console.log(value,' the values in the console, the king is back' )
+  try{
+    const response = await axiosSiteDetailsInstance.post("/postSiteMasterOP",value)
+    return response
+  }catch(err){
+    console.log(err,' error in the uploading site details service')
+    return err
+  }
+}
+
+
+export const UploadEmployeeDetails = async(data)=>{
+  console.log(data,' the datat in the condoel')
+  try{
+    const response = axiosSiteDetailsInstance.post("/postemployeeMasterOP",data)
+    console.log(response, ' response consoling in the service page')
+    return response
+  }catch(error){
+    console.log(error,' the error in the console')
+    return error
+  }
+}

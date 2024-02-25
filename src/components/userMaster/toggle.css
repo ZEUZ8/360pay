@@ -15,6 +15,7 @@
    
    /* Hide default HTML checkbox */
    .switch input {
+    display: none; /* Hide the checkbox */
     opacity: 1;
     width: 0;
     height: 0;

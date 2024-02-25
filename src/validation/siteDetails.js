@@ -10,6 +10,12 @@ export const siteDetailsValidation = yup.object().shape({
         .max(20)
         .matches(/^[a-zA-Z\s]+$/, 'Only alphabets are allowed')
         .required('Required'), 
+    ownerName: yup
+        .string()
+        .min(2,'Atleast 2 charecters')
+        .max(20)
+        .matches(/^[a-zA-Z\s]+$/, 'Only alphabets are allowed')
+        .required('Required'), 
     targetWage: yup
         .number()
         .min(3,'Atleast 2 charecters')
@@ -22,5 +28,6 @@ export const siteDetailsValidation = yup.object().shape({
     mobile : yup
         .string()
         .matches(phoneRegExp, 'Phone number is not valid')
-        .required('Required'),
+        .required('Required')
+        .typeError("Invalid format. Please Enter Valid Phone"),
 })

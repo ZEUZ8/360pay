@@ -1,57 +1,110 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WageDetails from "./WageDetails";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaCircleRight } from "react-icons/fa6";
 import SearchResultsList from "./SearchResultsList";
+import axios from "axios";
+import { getEmployeeWageData } from "../../Api/services/userServices";
 
 const Page = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
-  const [show, setShow] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState('');
+  const [show, setShow] = useState(false);
   const [suggestionCount, setSuggestionCound] = useState(0);
-
-
 
   // function that attached to the Detail click in the userWageDetails and waiting for the funtionality
   const handleClick = () => {
     console.log("function for api call");
   };
 
-  const fetchData = (value) => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => {
-        const result = json.filter((user) => {
-          return (
-            value &&
-            user &&
-            user.name &&
-            user.name.toLowerCase().includes(value)
-          );
-        });
-        setResults(result);
-      });
+  useEffect(() => {
+    console.log(selectedSuggestion, "0000888880000000");
+  }, [selectedSuggestion]);
+
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJCRDRiMHVKdTdKWEdjZzZjcHN6eFI0cWZOclAwRlVVamRqOFE0ZE1yMmh6aVJmNitzYzErcnphdC8vck9qOHlVVWlGbjU0VllTd1BKRStkVVZmekpZWm9TK2lDSmhlaGxxN2F1NURScVZXMHN2OFpTVGlQMlBxUU1IY0ZQVGhaNEY1TCswVEw2WXNDZitlcjVqenVyT3RoM2pkNFc4RXpGd1JlTzc0ZFc2Sno1ejZxTFU5Vm5XNldMZ0ZvMXRsaz0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA4ODU5ODg0LCJleHAiOjE3MDg5NDYyODQsImlhdCI6MTcwODg1OTg4NH0.1z2PG3hYr4TuDUc8I7nRyIS022Bpgv1Mvy9PHhneLt4";
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
   };
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          "https://sacrosys.net:6661/api/2654/getemployeeMasterList",
+          {
+            headers: headers,
+          }
+        );
+        console.log(response);
+        if (response?.data?.isSuccess) {
+          setResults(response?.data?.data);
+          setSuggestions(response?.data?.data);
+        }
+      } catch (err) {
+        console.log(err, " the error in the console");
+      }
+    })();
+  }, []);
 
   const handleChange = async (value) => {
+    // setShow(true);
     setShow(true);
     setSuggestionCound(0);
     setInput(value);
-    fetchData(value);
   };
 
+  useEffect(() => {
+    if (input.length > 0) {
+      const filteredEmployees = results.filter((employee) => {
+        // Convert both names to lowercase for case-insensitive comparison
+        return employee.empName.toLowerCase().startsWith(input.toLowerCase());
+      });
+      console.log(filteredEmployees, input, " the resul");
+      setSuggestions(filteredEmployees);
+    } else {
+      setSuggestions(results);
+    }
+
+    const matchingResult = results.find(async (result) => {
+      if (input.empName.toLowerCase() === result.empName.toLowerCase()) {
+        console.log(true)
+       try{
+        const response = await getEmployeeWageData(result);
+        console.log(response, " 7878787878787878787878798989898");
+        if(response.data.message === "Success" ){
+          setSelectedSuggestion(response.data.data[0])
+        }
+       }catch(err){
+        console.log(err,' the rerero')
+       }
+      }
+
+      console.log(matchingResult, " the reslt");
+      // Update the state only if a matching result is found
+      if (matchingResult) {
+        return matchingResult;
+      } else {
+        return null;
+      }
+    });
+  }, [input]);
+
   const handlePress = (evnt) => {
-    if (results) {
-      if (evnt.keyCode === 40 && suggestionCount < results.length-1) {
-        console.log(' the name')
+    if (suggestions) {
+      if (evnt.keyCode === 40 && suggestionCount < suggestions.length - 1) {
         setSuggestionCound((prev) => prev + 1);
       }
       if (evnt.keyCode === 38 && suggestionCount > 0) {
         setSuggestionCound((prev) => prev - 1);
       }
     }
-    if (evnt.key === "Enter" && results.length) {
-      setInput(results[suggestionCount].name);
-      setResults([]);
+    if (evnt.key === "Enter" && suggestions.length) {
+      setInput(suggestions[suggestionCount]);
+      // setResults([]);
+      setShow(false);
     }
   };
   return (
@@ -70,7 +123,7 @@ const Page = () => {
                     type="text"
                     placeholder="Choose Employee"
                     onKeyDown={handlePress}
-                    value={input}
+                    value={input.empName}
                     onChange={(e) => handleChange(e.target.value)}
                     className="p-3 px-5 w-full  text-sm placeholder-gray-400 focus:outline-none bg-transparent text-gray-500 bg-gray-200 rounded-md border-none "
                   />
@@ -80,13 +133,14 @@ const Page = () => {
                     onClick={() => setShow((prev) => !prev)}
                   />
                 </div>
-                {results.length > 0 && show && (
+                {suggestions.length > 0 && show && (
                   <div className={`absolute  scrollbar-hide  w-[100%] `}>
                     <SearchResultsList
                       suggestionCount={suggestionCount}
-                      setResults={setResults}
-                      results={results}
+                      setSuggestions={setSuggestions}
+                      suggestions={suggestions}
                       setInput={setInput}
+                      setShow={setShow}
                     />
                   </div>
                 )}
@@ -110,7 +164,7 @@ const Page = () => {
           </div>
         </div>
         <div className="row-span-5 md:col-span-1 flex flex-col gap-2  md:justify-center w-[100%]">
-          <WageDetails />
+          <WageDetails selectedSuggestion={selectedSuggestion} />
           <div className=" grid justify-center ">
             <h1
               className="bg-[#003663] px-10 py-2 rounded-lg text-white font-medium"

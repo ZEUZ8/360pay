@@ -1,18 +1,19 @@
 import React from 'react'
 
-const SearchResultsList = ({setResults,results,setInput,suggestionCount}) => {
+const SearchResultsList = ({suggestions,setSuggestions,setInput,suggestionCount,setShow}) => {
 
-  console.log(results[0],' the first balue getting rom the arrray')
+
   const handleClick = (data)=>{
-    setInput(data.name)
-    setResults([])
+    setInput(data)
+    setShow(false)
   }
   
   return (
     <div className={` w-full bg-gray-50  shadow-special flex flex-col rounded-lg max-h-[300px]  overflow-y-scroll scrollbar-hide  text-gray-400 p-2`}>
         {
-            results.map((results,id)=>{
-                return <div className={`${id === suggestionCount && `text-blue-300 mx-1`} cursor-pointer p-1`} onClick={()=>handleClick(results)} key={id}>{results.name}</div>
+            suggestions.map((suggestion,id)=>{
+              console.log(suggestion,' the suggestion')
+                return <div className={`${id === suggestionCount && `text-blue-300 mx-1`} cursor-pointer p-1`} onClick={()=>handleClick(suggestion)} key={id}>{suggestion.empName}</div>
             })
         }
 

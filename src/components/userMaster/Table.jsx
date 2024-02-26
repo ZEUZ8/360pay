@@ -19,8 +19,10 @@ const Table = () => {
   return (
     <>
       {modal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70  z-50">
-          <Form className="" row={row} setModal={setModal} />
+        <div className="fixed top-0 left-0 right-0 bottom-0 text-white flex items-center justify-center bg-gray-900 bg-opacity-70   z-50">
+          <div className=" w-[50%]">
+            <Form className="" row={row} setModal={setModal} />
+          </div>
         </div>
       )}
       <div className="mt-2 overflow-y-auto h-full scrollbar-hide rounded-lg max-h-[20rem]">
@@ -39,12 +41,12 @@ const Table = () => {
               >
                 userName
               </th>
-              <th
+              {/* <th
                 scope="col"
                 className="px-6 py-3 text-white border-x border-white"
               >
                 Password
-              </th>
+              </th> */}
               <th
                 scope="col"
                 className="px-6 py-3 text-white border-x border-white"
@@ -66,7 +68,7 @@ const Table = () => {
             </tr>
           </thead>
           <tbody className="overflow-y-auto">
-            {users.map((user, i) => {
+            {users.length > 0 ? users.map((user, i) => {
               // console.log(user,' the user in tehcons')
               return (
                 <>
@@ -78,8 +80,8 @@ const Table = () => {
                       {i + 1}
                     </th>
                     <td className="px-6 py-4">{user?.userName}</td>
-                    <td className="px-6 py-4">{user?.password}</td>
-                    <td className="px-6 py-4">{user?.privilage} </td>
+                    {/* <td className="px-6 py-4">12345</td> */}
+                    <td className="px-6 py-4">{user?.authorization} </td>
                     <td className="">
                       <div className=" flex justify-center h-[10%] z-0">
                         <ToggleSwitch currentUser={user} />
@@ -94,7 +96,9 @@ const Table = () => {
                   </tr>
                 </>
               );
-            })}
+            }): <>
+            <div>
+              <p>No Data found, please add </p></div></>}
           </tbody>
         </table>
       </div>

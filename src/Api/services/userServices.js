@@ -1,5 +1,9 @@
 import axios from "axios";
-import { axiosSiteDetailsInstance, axiosUserInstance, imageInstance } from "../axios";
+import {
+  axiosSiteDetailsInstance,
+  axiosUserInstance,
+  imageInstance,
+} from "../axios";
 const token =
   "w^0V6jJamvLyaBy5VEYQ2x4gzwrx5BifP6wjB/hQDNmDFSJ2//4/4oze7iJuiFrd";
 // export const uploadImage = async(image)=>{
@@ -17,14 +21,14 @@ export const uploadImage = async (file) => {
   try {
     const formData = new FormData();
     formData.append("imageFiles", file);
-    console.log('entered in the coe')
+    console.log("entered in the coe");
     const response = await imageInstance.post("/UploadImages", formData, {
       headers: {
         Token: token,
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response,'consoling in the service page')
+    console.log(response, "consoling in the service page");
     return response;
   } catch (err) {
     console.log(err, " error in image upload services");
@@ -39,11 +43,11 @@ export const deleteImage = async (file) => {
       headers: {
         Token: token,
       },
-      data:{fileNames:[file]}
+      data: { fileNames: [file] },
       // No need for Content-Type or request body for DELETE requests
     });
 
-    console.log(response.data," consoling the result in the service page");
+    console.log(response.data, " consoling the result in the service page");
     return response.data;
   } catch (err) {
     console.log(err, "the err message");
@@ -51,27 +55,83 @@ export const deleteImage = async (file) => {
   }
 };
 
-
-export const uploadSiteDetails = async (value)=>{
-  console.log(value,' the values in the console, the king is back' )
-  try{
-    const response = await axiosSiteDetailsInstance.post("/postSiteMasterOP",value)
-    return response
-  }catch(err){
-    console.log(err,' error in the uploading site details service')
-    return err
+export const uploadSiteDetails = async (value) => {
+  console.log(value, " the values in the console, the king is back");
+  try {
+    const response = await axiosSiteDetailsInstance.post(
+      "/postSiteMasterOP",
+      value
+    );
+    return response;
+  } catch (err) {
+    console.log(err, " error in the uploading site details service");
+    return err;
   }
-}
+};
 
+export const UploadEmployeeDetails = async (data) => {
+  console.log(data, " the datat in the condoel");
+  try {
+    const response = axiosSiteDetailsInstance.post(
+      "/postemployeeMasterOP",
+      data
+    );
+    console.log(response, " response consoling in the service page");
+    return response;
+  } catch (error) {
+    console.log(error, " the error in the console");
+    return error;
+  }
+};
 
-export const UploadEmployeeDetails = async(data)=>{
-  console.log(data,' the datat in the condoel')
+export const postUserMaster = async (value) => {
+  try {
+    const response = await axiosSiteDetailsInstance.post(
+      "/postUserMasterOP",
+      null,
+      {
+        headers: {
+          OpMode: value.OpMode,
+          UserId: value.userId ? value.userId : "",
+          UserName: value.userName,
+          Password: value.password,
+          Privilage: value.authorization,
+          isActive: value.isActive,
+        },
+      }
+    );
+    console.log(response, " the response consoling in the serice");
+    return response;
+  } catch (err) {
+    console.log(err, " err consoling in the service");
+    return err;
+  }
+};
+
+export const getEmployeeWageData = async (data) => {
+  try {
+    const response = await axiosSiteDetailsInstance.get(
+      "/getEmployeeWageSummary",
+      {
+        headers: {
+          EmployeeId: data.empId,
+        },
+      }
+    );
+    return response;
+  } catch (err) {
+    console.log(err, " the error in teh sconeo");
+    return err;
+  }
+};
+
+export const getUserMasterList = async ()=>{
   try{
-    const response = axiosSiteDetailsInstance.post("/postemployeeMasterOP",data)
-    console.log(response, ' response consoling in the service page')
+    const response = await axiosSiteDetailsInstance.get("/getUserMasterList")
+    console.log(response,' response consoling in the getUserMasterList service')
     return response
   }catch(error){
-    console.log(error,' the error in the console')
+    console.log(error,' error consling in the getUserMasteList service page')
     return error
   }
 }

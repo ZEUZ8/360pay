@@ -3,20 +3,43 @@ import { useFormik } from "formik";
 import { userMasterValidation } from "../../validation/userMaster";
 import { IoIosClose } from "react-icons/io";
 import { AppContext } from "../../Context/AppProvider";
+import { postUserMaster } from "../../Api/services/userServices";
 
-const Form = ({ handleUser, row, setModal, updateUser }) => {
+const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
+  console.log(row, " the row in teh user");
   const { users, setUsers } = useContext(AppContext);
   const [roles, setRoles] = useState(["admin", "employee"]);
-  const [roleError,setRoleError] = useState(false)
+  const [roleError, setRoleError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values) => {
-    values.userId = `${values?.userName}12`;
-    console.log(values,' the avlue in the soneole')
-    if(values.privilage){
-      setRoleError(false)
-      handleUser(values);
-    }else{
-      setRoleError(true)
+    // console.log(values,' the avlue in the soneole')
+    if (values.authorization) {
+      setRoleError(false);
+      try {
+        values.isActive = true;
+        values.OpMode = "I";
+        console.log(values.authorization);
+        const response = await postUserMaster(values);
+        console.log(response.response, " the rsponse");
+        if (response) {
+          if (response?.data?.isSuccess) {
+            setDuplicateUser(false);
+            const userId = response.data.data.match(/\d+$/)[0];
+            values.userId = userId;
+            console.log(values, " the values in the cvonsole");
+            handleUser(values);
+            resetForm();
+          } else if (!response?.response?.data.isSuccess) {
+            console.log(" consoling in the after");
+            setDuplicateUser(true);
+          }
+        }
+      } catch (err) {
+        console.log(err, " the err");
+      }
+    } else {
+      setRoleError(true);
     }
   };
 
@@ -25,39 +48,56 @@ const Form = ({ handleUser, row, setModal, updateUser }) => {
   //   //making an api call for soft deleting and making it unavailable for the users
   // };
 
- 
-  const handleUpdation = () => {
-    setUsers((prevUsers) => {
-      return prevUsers.map((user) => {
+  const handleUpdation = async () => {
+    try {
+      users.map(async (user) => {
         if (user.userId === values.userId) {
-          return values;
+          values.OpMode = "U";
+          values.isActive = user.isActive;
+          console.log(values, " at the end ");
+          const response = await postUserMaster(values);
+          if (response.data.isSuccess) {
+            setUsers((prev) => {
+              return prev.map((user) => {
+                user.userId === values.userId ? { ...user, ...values } : user;
+              });
+            });
+          }
         }
-        return user; // Return the original user object if it doesn't match
       });
-    });
+    } catch (err) {
+      console.log(err, " error in the updation page");
+    }
     setModal(false);
   };
 
-  const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
-    useFormik({
-      initialValues: {
-        userId: row ? row?.userId : "",
-        userName: row ? row?.userName : "",
-        password: row ? row?.password : "",
-        privilage: row ? row?.privilage : "",
-      },
-      validationSchema: userMasterValidation,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      userId: row ? row?.userId : "",
+      userName: row ? row?.userName : "",
+      password: row ? row?.password : "",
+      authorization: row ? row?.authorization : "",
+    },
+    validationSchema: userMasterValidation,
+    onSubmit,
+  });
 
-    useEffect(()=>{
-      if(values.privilage === ""){
-        setRoleError(true)
-      }else{
-        setRoleError(false)
-      }
-    },[values.privilage])
-  
+  useEffect(() => {
+    if (values.authorization === "") {
+      setRoleError(true);
+    } else {
+      setRoleError(false);
+    }
+  }, [values.authorization]);
+
   return (
     <div className="p-5 bg-white  rounded-xl shadow-special w-full">
       {row && (
@@ -98,28 +138,39 @@ const Form = ({ handleUser, row, setModal, updateUser }) => {
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
-          placeholder={errors.password && touched.password ? `Password ${errors.password} ` : "Password"}
+          placeholder={
+            errors.password && touched.password
+              ? `Password ${errors.password} `
+              : "Password"
+          }
         />
-        {errors.password && touched.password && values.password.length > 0 && (
+        {errors.password && touched.password && values.password && (
           <h1 className="text-xs pt-2 text-rose-500 ">{errors.password}</h1>
         )}
       </div>
       <div className="mb-4">
         <select
-          id="privilage"
-          
-          value={values.privilage}
+          id="authorization"
+          value={values.authorization}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`${roleError ? "text-rose-500 animate-pulse" : "text-gray-500"} bg-gray-100    text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+          className={`${
+            roleError ? "text-rose-500 animate-pulse" : "text-gray-500"
+          } bg-gray-100    text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
         >
-          <option value="" className="placeholder:text-red-500">Privilage</option>
+          <option value="" className="placeholder:text-red-500">
+            Privilage
+          </option>
           {roles.map((role) => (
-            <option value={role} key={role}>{role}</option>
+            <option value={role} key={role}>
+              {role}
+            </option>
           ))}
         </select>
-        {errors.privilage && touched.privilage && (
-          <h1 className="text-xs pt-2 text-rose-500 ">{errors.privilage}</h1>
+        {errors.authorization && touched.authorization && (
+          <h1 className="text-xs pt-2 text-rose-500 ">
+            {errors.authorization}
+          </h1>
         )}
       </div>
 

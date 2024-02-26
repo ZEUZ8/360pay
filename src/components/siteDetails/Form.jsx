@@ -3,6 +3,8 @@ import { siteDetailsValidation } from "../../validation/siteDetails";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { uploadSiteDetails } from "../../Api/services/userServices";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = ({ setDuplicateError }) => {
   const navigate = useNavigate();
@@ -11,21 +13,18 @@ const Form = ({ setDuplicateError }) => {
     console.log(values, "submitted in the console");
     // navigate("/employeeDetails")
     try {
-      const data = {
-        opMode: "I",
-        siteId: 0,
-        siteName: "site 1",
-        siteTarget: 60000,
-        siteLocation: "calicut",
-        siteMobileNo: "9744070172",
-        isActive: true,
-      };
-      const response = await uploadSiteDetails(data);
+      values.isActive = true
+      values.opMode = "I"
+      const response = await uploadSiteDetails(values);
+      console.log(response,' the response in teh value')
       if (response) {
-        if (response.data.isSuccess) {
+        if (response?.data?.isSuccess) {
           setDuplicateError(false);
-        } else {
+          resetForm()
+          navigate("/employeeDetails")
+        } else if(response.response.data.message.includes("Violation of UNIQUE KEY constraint")){
           setDuplicateError(true);
+          toast.error("Site Already exists");
         }
       }
     } catch (error) {
@@ -33,7 +32,7 @@ const Form = ({ setDuplicateError }) => {
     }
   };
 
-  const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
+  const { values, errors, touched, handleSubmit, handleBlur, handleChange,resetForm } =
     useFormik({
       initialValues: {
         siteName: "",
@@ -48,6 +47,7 @@ const Form = ({ setDuplicateError }) => {
 
   return (
     <div>
+      <ToastContainer />
       <div className="mb-4">
         <input
           type="text"

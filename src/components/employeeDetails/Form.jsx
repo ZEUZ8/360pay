@@ -24,7 +24,7 @@ const Form = ({ image, setImage }) => {
 
   //state for photo storing
   const { photo, setPhoto, name, setUserName } = useContext(AppContext);
-
+ 
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
 
@@ -57,6 +57,8 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
           setImage(response?.data?.FileDetails[0]);
+        }else{
+          toast.error("Something went wrong");
         }
       }
     }
@@ -88,24 +90,27 @@ const Form = ({ image, setImage }) => {
 
   const onSubmit = async () => {
     if (photo && documentFile) {
-      console.log(photo, documentFile, " the doucmen fiel and photo");
+      console.log(photo, documentFile,image, " the doucmen fiel and photo",values,' the value ins teh sonee');
       try {
         const data = {
           opMode: "I",
           empId: 0,
-          empName: "Vishnu",
-          empMobileNo: "9744070765",
-          empAddress: "test address",
-          empWage: 10000,
-          empImageUrl: "https://picsum.photos/200/300",
-          empDocument: "https://picsum.photos/200/300",
+          empName: values?.name,
+          empMobileNo: values?.mobile,
+          empAddress: values?.address,
+          empWage: values?.dailyWage,
+          empImageUrl: image?.FileUrl,
+          empDocument: documentFile?.FileUrl,
           isActive: true,
         };
+        console.log(data,' the updated data')
         const response = await UploadEmployeeDetails(data);
         console.log(response, " response in the page ");
-        if (response.data.isSuccess) {
+        if (response?.data?.isSuccess) {
+          resetForm()
+          setPhoto("")
+          setDocumentFile("")
           navigate("/userMaster")
-          console.log(response, " response in the condition");
         }
       } catch (err) {
         console.log(err, " error in the onSubmit of the employee Details");
@@ -113,7 +118,7 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
+  const { values, errors, touched, handleChange, handleSubmit, handleBlur,resetForm } =
     useFormik({
       initialValues: {
         name: name ? name : "",
@@ -142,10 +147,6 @@ const Form = ({ image, setImage }) => {
       photoInputRef.current.value = ""; // Reset the value of photo input
     }
   };
-
-  useEffect(() => {
-    console.log(photo, photoName, " the phtot");
-  }, [photo, photoName]);
 
   return (
     <form>

@@ -5,7 +5,8 @@ import { postUserMaster } from "../../Api/services/userServices";
 
 function ToggleSwitch({ currentUser }) {
   const { users, setUsers } = useContext(AppContext);
-  const [status, setStatus] = useState(currentUser.isActive);
+  console.log(currentUser,' the current user inthe conel')
+  const [status, setStatus] = useState(currentUser?.isActive);
 
   const handleChange = () => {
     setStatus((prev) => !prev);

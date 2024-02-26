@@ -56,11 +56,18 @@ export const deleteImage = async (file) => {
 };
 
 export const uploadSiteDetails = async (value) => {
-  console.log(value, " the values in the console, the king is back");
   try {
     const response = await axiosSiteDetailsInstance.post(
       "/postSiteMasterOP",
-      value
+      {
+        opMode: value?.opMode,
+        siteId: 0,
+        siteName: value?.siteName,
+        siteTarget: value?.targetWage,
+        siteLocation: value?.location,
+        siteMobileNo: value?.mobile,
+        isActive: value?.isActive,
+      }
     );
     return response;
   } catch (err) {
@@ -125,13 +132,16 @@ export const getEmployeeWageData = async (data) => {
   }
 };
 
-export const getUserMasterList = async ()=>{
-  try{
-    const response = await axiosSiteDetailsInstance.get("/getUserMasterList")
-    console.log(response,' response consoling in the getUserMasterList service')
-    return response
-  }catch(error){
-    console.log(error,' error consling in the getUserMasteList service page')
-    return error
+export const getUserMasterList = async () => {
+  try {
+    const response = await axiosSiteDetailsInstance.get("/getUserMasterList");
+    console.log(
+      response,
+      " response consoling in the getUserMasterList service"
+    );
+    return response;
+  } catch (error) {
+    console.log(error, " error consling in the getUserMasteList service page");
+    return error;
   }
-}
+};

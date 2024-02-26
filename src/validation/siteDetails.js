@@ -8,7 +8,7 @@ export const siteDetailsValidation = yup.object().shape({
         .string()
         .min(2,'Atleast 2 charecters')
         .max(20)
-        .matches(/^[a-zA-Z\s]+$/, 'Only alphabets are allowed')
+        // .matches(/^[a-zA-Z\s]+$/, 'Only alphabets are allowed')
         .required('Required'), 
     ownerName: yup
         .string()

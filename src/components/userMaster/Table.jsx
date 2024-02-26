@@ -97,7 +97,7 @@ const Table = () => {
                 </>
               );
             }): <>
-            <div>
+            <div className="text-red-300 text-center">
               <p>No Data found, please add </p></div></>}
           </tbody>
         </table>

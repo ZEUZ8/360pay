@@ -12,20 +12,20 @@ const Page = () => {
 
   const handleImage = async () => {
     try {
-      if (image !== "/imgs/person.png" || image !== "/imgs/emptyUser.png") {
-        const response = await deleteImage(image.Filename);
-        if (response.status) {
-          console.log("enterd in the condition");
-          setImage(emptyUser);
+      if(image !== "/imgs/person.png" || image !== "/imgs/emptyUser.png"){
+        const response = await deleteImage(image.Filename)
+        if(response.status){
+          console.log('enterd in the condition')
+          setImage(emptyUser)
           setPhoto("");
         }
-      } else {
-        setImage(emptyUser);
+      }else{
+        setImage(emptyUser)
       }
     } catch (err) {
       console.log(err);
     }
-    setPhoto("");
+    setPhoto("")
   };
 
   return (
@@ -38,11 +38,7 @@ const Page = () => {
           />
           <img
             className="w-40 h-40  rounded-full bg-stone-200"
-            src={
-              image === "/imgs/person.png" || image === "/imgs/emptyUser.png"
-                ? image
-                : image.FileUrl
-            }
+            src={image === "/imgs/person.png" || image === "/imgs/emptyUser.png" ? image : image.FileUrl}
             alt="icon"
           />
         </div>

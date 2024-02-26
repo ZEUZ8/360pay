@@ -26,7 +26,7 @@ function attachToken(req) {
 // functionality for attaching the token with bearer
 function attachToken2(req) {
   // const token = localStorage.getItem("userToken")
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJ6WU9XN2RZVGMwUlBKc2dmYjd3RzIzdTJRcGh1cXZ2WS9UQ0x3MjZUWVdtcnhoLzY4b2xVNTRDRDBvMzNnY2o5RVQrUmdaOWlqbFQ2VlM2YmxYY1RzRCt6amMzQlRvcXNvbEFyKzg3RWNHM1owT0dpZEk1UTU3dllma0xXNEU4SCt1TFpoQlFhK3c0ZFp6WjFTL0lxL3hCWVJnOC8ydERoblZRNTdwSkJKWDdvcGhVU1BnRTVJK0E4VzFGZHJjVT0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA4OTIyODA3LCJleHAiOjE3MDkwMDkyMDcsImlhdCI6MTcwODkyMjgwN30.1i1xnHbpWHdJybbdH8qGw7j5Hl0KY9Ebx1nhWL4H4nw";
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiIyVUJQN1l1SzhSZVV2Q1VWU29md0k5ZGhreXN6REkveTFZOTJiTi9YeDU1QUN6bGNIRGNwT055RXJyS2JzTThlSlJwNDlZdGJkVm1lZzBWVituOWJUZ3lDV1c5L1lOcVZIcUVwNTQrWWR6TjUyalJxZjhRUVRwQkNOU1kxUHFIMGlZeC9DMVl2MkxrREM3Yk16Rm1xL200bkVpWFFiQzJiN0dmRUkxcHNmVDhYamtGRzcvOFFRcTBUbmlZVXA3ND0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA4OTc5OTQ3LCJleHAiOjE3MDkwNjYzNDcsImlhdCI6MTcwODk3OTk0N30.90GxHbHKMvk_3kWJTjGsOhbbgzmzOunxktuA3kd29OY";
   if (token) {
     req.headers["Authorization"] = `Bearer ${token}`;
   }
@@ -41,7 +41,6 @@ axiosUserInstance.interceptors.request.use((req) => {
   const config = attachToken(req);
   return config;
 });
-
 
 axiosSiteDetailsInstance.interceptors.request.use((req)=>{
   const config = attachToken2(req)

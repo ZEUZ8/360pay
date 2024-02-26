@@ -6,7 +6,6 @@ import { AppContext } from "../../Context/AppProvider";
 import { postUserMaster } from "../../Api/services/userServices";
 
 const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
-  console.log(row, " the row in teh user");
   const { users, setUsers } = useContext(AppContext);
   const [roles, setRoles] = useState(["admin", "employee"]);
   const [roleError, setRoleError] = useState(false);
@@ -21,7 +20,6 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
         values.OpMode = "I";
         console.log(values.authorization);
         const response = await postUserMaster(values);
-        console.log(response.response, " the rsponse");
         if (response) {
           if (response?.data?.isSuccess) {
             setDuplicateUser(false);
@@ -49,26 +47,32 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
   // };
 
   const handleUpdation = async () => {
-    try {
-      users.map(async (user) => {
-        if (user.userId === values.userId) {
-          values.OpMode = "U";
-          values.isActive = user.isActive;
-          console.log(values, " at the end ");
-          const response = await postUserMaster(values);
-          if (response.data.isSuccess) {
-            setUsers((prev) => {
-              return prev.map((user) => {
-                user.userId === values.userId ? { ...user, ...values } : user;
+    if(!roleError){
+      try {
+        users.map(async (user) => {
+          if (user.userId === values.userId) {
+            values.OpMode = "U";
+            values.isActive = user.isActive;
+            console.log(values, " at the end ");
+            const response = await postUserMaster(values);
+            if (response?.data?.isSuccess) {
+              setUsers((prev) => {
+                return prev.map((user) => {
+                  if(user.userId === values.userId ){
+                    return {...user,...values}
+                  }
+                  return user
+                });
               });
-            });
+            }
+            console.log(users,' the ser')
           }
-        }
-      });
-    } catch (err) {
-      console.log(err, " error in the updation page");
+        });
+      } catch (err) {
+        console.log(err, " error in the updation page");
+      }
+      setModal(false);
     }
-    setModal(false);
   };
 
   const {

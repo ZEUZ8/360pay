@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import WageDetails from "./WageDetails";
 import { FaChevronDown, FaCircleRight } from "react-icons/fa6";
 import SearchResultsList from "./SearchResultsList";
-import axios from "axios";
 import { getEmployeeWageData } from "../../Api/services/userServices";
+import { axiosSiteDetailsInstance } from "../../Api/axios";
 
 const Page = () => {
   const [input, setInput] = useState("");
@@ -18,27 +18,11 @@ const Page = () => {
     console.log("function for api call");
   };
 
-  useEffect(() => {
-    console.log(selectedSuggestion, "0000888880000000");
-  }, [selectedSuggestion]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJCRDRiMHVKdTdKWEdjZzZjcHN6eFI0cWZOclAwRlVVamRqOFE0ZE1yMmh6aVJmNitzYzErcnphdC8vck9qOHlVVWlGbjU0VllTd1BKRStkVVZmekpZWm9TK2lDSmhlaGxxN2F1NURScVZXMHN2OFpTVGlQMlBxUU1IY0ZQVGhaNEY1TCswVEw2WXNDZitlcjVqenVyT3RoM2pkNFc4RXpGd1JlTzc0ZFc2Sno1ejZxTFU5Vm5XNldMZ0ZvMXRsaz0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA4ODU5ODg0LCJleHAiOjE3MDg5NDYyODQsImlhdCI6MTcwODg1OTg4NH0.1z2PG3hYr4TuDUc8I7nRyIS022Bpgv1Mvy9PHhneLt4";
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(
-          "https://sacrosys.net:6661/api/2654/getemployeeMasterList",
-          {
-            headers: headers,
-          }
-        );
-        console.log(response);
+        const response = await axiosSiteDetailsInstance.get("/getemployeeMasterList",);
         if (response?.data?.isSuccess) {
           setResults(response?.data?.data);
           setSuggestions(response?.data?.data);
@@ -81,9 +65,6 @@ const Page = () => {
         console.log(err,' the rerero')
        }
       }
-
-      console.log(matchingResult, " the reslt");
-      // Update the state only if a matching result is found
       if (matchingResult) {
         return matchingResult;
       } else {

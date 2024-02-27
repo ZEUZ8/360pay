@@ -11,7 +11,6 @@ const Page = () => {
   useEffect(() => {    
     (async () => {
         const response = await getUserMasterList()
-        console.log(response,' the response in teh fucniton' )
         setUsers(response?.data?.data);
     })();
   }, []);
@@ -26,7 +25,7 @@ const Page = () => {
   return (
     <div>
       <div className="grid max-md:grid-rows-12 md:grid-cols-2 h-[100vh] md:h-[70vh] md:justify-center md:items-center">
-        <div className="max-md:row-start-2 max-md:row-span-2 md:col-span-2 grid items-end justify-center pb-5 ">
+        <div className="max-md:row-start-2 max-md:row-span-2 md:col-span-full grid items-end justify-center pb-5 ">
         <img src="/imgs/256x256.png" alt="icon" onClick={()=>navigate("/")}/>
         </div>
         <div className="max-md:row-start-5 max-md:row-span-4 mx-12 ">

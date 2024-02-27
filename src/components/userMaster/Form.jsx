@@ -4,6 +4,9 @@ import { userMasterValidation } from "../../validation/userMaster";
 import { IoIosClose } from "react-icons/io";
 import { AppContext } from "../../Context/AppProvider";
 import { postUserMaster } from "../../Api/services/userServices";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
   const { users, setUsers } = useContext(AppContext);
@@ -65,7 +68,6 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
                 });
               });
             }
-            console.log(users,' the ser')
           }
         });
       } catch (err) {
@@ -74,6 +76,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
       setModal(false);
     }
   };
+
 
   const {
     values,
@@ -103,7 +106,8 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
   }, [values.authorization]);
 
   return (
-    <div className="p-5 bg-white  rounded-xl shadow-special w-full">
+    <div className="p-5  rounded-xl shadow-special w-full bg-white ">
+      <ToastContainer />
       {row && (
         <div
           onClick={() => setModal(false)}

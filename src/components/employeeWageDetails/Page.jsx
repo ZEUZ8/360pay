@@ -9,7 +9,8 @@ const Page = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedSuggestion, setSelectedSuggestion] = useState('');
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
+  const [userId, setUserId] = useState(null);
   const [show, setShow] = useState(false);
   const [suggestionCount, setSuggestionCound] = useState(0);
 
@@ -18,17 +19,18 @@ const Page = () => {
     console.log("function for api call");
   };
 
-
   useEffect(() => {
     (async () => {
       try {
-        const response = await axiosSiteDetailsInstance.get("/getemployeeMasterList",);
+        const response = await axiosSiteDetailsInstance.get(
+          "/getemployeeMasterList"
+        );
         if (response?.data?.isSuccess) {
           setResults(response?.data?.data);
           setSuggestions(response?.data?.data);
         }
       } catch (err) {
-        console.log(err, " the error in the console");
+        // console.log(err, " the error in the console");
       }
     })();
   }, []);
@@ -38,39 +40,30 @@ const Page = () => {
     setShow(true);
     setSuggestionCound(0);
     setInput(value);
+    const filteredEmployees = results.filter((employee) => {
+      // Convert both names to lowercase for case-insensitive comparison
+      return employee.empName.toLowerCase().startsWith(value.toLowerCase());
+    });
+    setSuggestions(filteredEmployees);
   };
 
   useEffect(() => {
-    if (input.length > 0) {
-      const filteredEmployees = results.filter((employee) => {
-        // Convert both names to lowercase for case-insensitive comparison
-        return employee.empName.toLowerCase().startsWith(input.toLowerCase());
-      });
-      console.log(filteredEmployees, input, " the resul");
-      setSuggestions(filteredEmployees);
-    } else {
-      setSuggestions(results);
-    }
-
-    const matchingResult = results.find(async (result) => {
-      if (input.empName.toLowerCase() === result.empName.toLowerCase()) {
-        console.log(true)
-       try{
-        const response = await getEmployeeWageData(result);
-        console.log(response, " 7878787878787878787878798989898");
-        if(response.data.message === "Success" ){
-          setSelectedSuggestion(response.data.data[0])
+    if (input) {
+      results.map(async (result) => {
+        if (result.empName.toLowerCase() === input.toLowerCase()) {
+          try {
+            const response = await getEmployeeWageData(result);
+            if (response.data.message === "Success") {
+              setSelectedSuggestion(response.data.data[0]);
+            }
+          } catch (err) {
+            throw(err)
+          }
         }
-       }catch(err){
-        console.log(err,' the rerero')
-       }
-      }
-      if (matchingResult) {
-        return matchingResult;
-      } else {
-        return null;
-      }
-    });
+      });
+    } else {
+      setSelectedSuggestion("");
+    }
   }, [input]);
 
   const handlePress = (evnt) => {
@@ -83,7 +76,7 @@ const Page = () => {
       }
     }
     if (evnt.key === "Enter" && suggestions.length) {
-      setInput(suggestions[suggestionCount]);
+      setInput(suggestions[suggestionCount]?.empName);
       // setResults([]);
       setShow(false);
     }
@@ -104,7 +97,7 @@ const Page = () => {
                     type="text"
                     placeholder="Choose Employee"
                     onKeyDown={handlePress}
-                    value={input.empName}
+                    value={input}
                     onChange={(e) => handleChange(e.target.value)}
                     className="p-3 px-5 w-full  text-sm placeholder-gray-400 focus:outline-none bg-transparent text-gray-500 bg-gray-200 rounded-md border-none "
                   />
@@ -114,7 +107,7 @@ const Page = () => {
                     onClick={() => setShow((prev) => !prev)}
                   />
                 </div>
-                {suggestions.length > 0 && show && (
+                {input.length > 0 && show && (
                   <div className={`absolute  scrollbar-hide  w-[100%] `}>
                     <SearchResultsList
                       suggestionCount={suggestionCount}

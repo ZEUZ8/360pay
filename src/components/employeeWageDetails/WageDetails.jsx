@@ -1,7 +1,7 @@
 import React from "react";
 
 const WageDetails = ({ selectedSuggestion }) => {
-  console.log(selectedSuggestion, " the id fon the paren");
+  // console.log(selectedSuggestion, " the id fon the paren");
   // console.log(selectedSuggestion[0].dailyWage)
   return (
     <>

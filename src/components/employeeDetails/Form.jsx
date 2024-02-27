@@ -23,6 +23,7 @@ const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
 
   //state for photo storing
+  const [loading,setLoading] = useState(false)
   const { photo, setPhoto, name, setUserName } = useContext(AppContext);
 
   const [photoName, setPhotoName] = useState("");
@@ -53,7 +54,6 @@ const Form = ({ image, setImage }) => {
           })();
         }
         const response = await uploadImage(file);
-        console.log(response, " consling the rsponse");
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
           setImage(response?.data?.FileDetails[0]);
@@ -68,7 +68,6 @@ const Form = ({ image, setImage }) => {
   const handleDocumentChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
-    console.log(file, " the file");
     const error = FileValidation(file);
     if (error) {
       setFileError(error);
@@ -100,12 +99,10 @@ const Form = ({ image, setImage }) => {
           empAddress: values?.address,
           empWage: values?.dailyWage,
           empImageUrl: image?.FileUrl,
-          empDocument: documentFile?.FileUrl,
+          empDocument: documentFile ? documentFile?.FileUrl : '',
           isActive: true,
         };
-        console.log(data, " the updated data");
         const response = await UploadEmployeeDetails(data);
-        console.log(response, " response in the page ");
         if (response?.data?.isSuccess) {
           resetForm();
           setPhoto("");
@@ -140,7 +137,7 @@ const Form = ({ image, setImage }) => {
   });
 
   useEffect(() => {
-    setUserName(values.name);
+    setUserName(values?.name);
   }, [values.name]);
 
   const clearFileInput = () => {

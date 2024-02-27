@@ -24,7 +24,7 @@ const Form = ({ image, setImage }) => {
 
   //state for photo storing
   const { photo, setPhoto, name, setUserName } = useContext(AppContext);
- 
+
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
 
@@ -57,7 +57,7 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
           setImage(response?.data?.FileDetails[0]);
-        }else{
+        } else {
           toast.error("Something went wrong");
         }
       }
@@ -77,8 +77,9 @@ const Form = ({ image, setImage }) => {
       if (file) {
         setDocumentName(file);
         if (documentFile) {
-          const response = await deleteImage(documentFile.Filename);
-          console.log(response);
+          (async () => {
+            await deleteImage(documentFile.Filename);
+          })();
         }
         const response = await uploadImage(file);
         if (response?.data?.ImageUploadStatus && response.status === 200) {
@@ -89,8 +90,7 @@ const Form = ({ image, setImage }) => {
   };
 
   const onSubmit = async () => {
-    if (photo && documentFile) {
-      console.log(photo, documentFile,image, " the doucmen fiel and photo",values,' the value ins teh sonee');
+    if (photo) {
       try {
         const data = {
           opMode: "I",
@@ -103,14 +103,14 @@ const Form = ({ image, setImage }) => {
           empDocument: documentFile?.FileUrl,
           isActive: true,
         };
-        console.log(data,' the updated data')
+        console.log(data, " the updated data");
         const response = await UploadEmployeeDetails(data);
         console.log(response, " response in the page ");
         if (response?.data?.isSuccess) {
-          resetForm()
-          setPhoto("")
-          setDocumentFile("")
-          navigate("/userMaster")
+          resetForm();
+          setPhoto("");
+          setDocumentFile("");
+          navigate("/userMaster");
         }
       } catch (err) {
         console.log(err, " error in the onSubmit of the employee Details");
@@ -118,19 +118,26 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  const { values, errors, touched, handleChange, handleSubmit, handleBlur,resetForm } =
-    useFormik({
-      initialValues: {
-        name: name ? name : "",
-        mobile: "",
-        address: "",
-        dailyWage: "",
-        photo: "",
-        document: "",
-      },
-      validationSchema: employeeDetailsValidation,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    handleBlur,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      name: name ? name : "",
+      mobile: "",
+      address: "",
+      dailyWage: "",
+      photo: "",
+      document: "",
+    },
+    validationSchema: employeeDetailsValidation,
+    onSubmit,
+  });
 
   useEffect(() => {
     setUserName(values.name);
@@ -326,7 +333,7 @@ const Form = ({ image, setImage }) => {
         />
         <div
           className={`p-3 text-xs col-span-3  grid  items-center ${
-            !documentFile || fileError ? "text-rose-400" : "text-gray-500"
+             fileError ? "text-rose-400" : "text-gray-500"
           }`}
         >
           {fileError.length > 0 ? (

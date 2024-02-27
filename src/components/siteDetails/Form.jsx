@@ -72,7 +72,7 @@ const Form = ({ setDuplicateError }) => {
       </div>
       <div className="mb-4">
         <input
-          type="number"
+          type="string"
           id="targetWage"
           value={values.targetWage}
           onBlur={handleBlur}
@@ -106,8 +106,8 @@ const Form = ({ setDuplicateError }) => {
           } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
           placeholder={
             errors.ownerName && touched.ownerName
-              ? `Target Wage  ${errors.ownerName}`
-              : "Target Wage"
+              ? `Owner Name  ${errors.ownerName}`
+              : "Owner Name"
           }
         />
         {errors.ownerName && touched.ownerName && values.ownerName && (
@@ -128,8 +128,8 @@ const Form = ({ setDuplicateError }) => {
           } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
           placeholder={
             errors.location && touched.location
-              ? `Owner Name  ${errors.location}`
-              : "Owner Name"
+              ? `Location  ${errors.location}`
+              : "Location"
           }
         />
         {errors.location && touched.location && values.location.length > 0 && (

@@ -19,7 +19,7 @@ export const siteDetailsValidation = yup.object().shape({
     targetWage: yup
         .number()
         .min(3,'Atleast 2 charecters')
-        .typeError('Invalid format. Please enter a valid ID.') 
+        .typeError('Invalid format. Please enter a valid Amount.') 
         .required('Required'), 
     location : yup
         .string()

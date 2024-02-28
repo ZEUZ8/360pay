@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJHOUFGcGF4WjFOemUrd3h4R3RJSHA0WGtWV3Rma1E3a0xXbC9tcExpWGV5d0dsSmpLbjBTc1ErS3h0REZqUkRDTk54QkFta2VYR2lYS1JNbEl4cy9sTnJVL0krMzVsYWRaaldRRjNWMHkwWGVQN1Q3ejk5VTNxT1dPSWd0eWJwRlc1N2tLbXE4Wk5RWE5zSEcvQWw2S0V3TjhKK0dBTTY0QnBhWVRHWC90dTZIYlNBVDh0NVVpVGdjN3JOS2pxVT0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA5MDY3MDI5LCJleHAiOjE3MDkxNTM0MjksImlhdCI6MTcwOTA2NzAyOX0.nN2BLfonz3o5vqQFdqxkxQyVshmrL5fZ3x3InwtXra4";
+
 function createInstance(url) {
   const axiosInstance = axios.create({
     baseURL: url,
@@ -12,11 +14,10 @@ function createInstance(url) {
 }
 
 //functionality for attaching the token for all request
-function attachToken(req) {
+function FileInterceptors(req) {
   // const token = localStorage.getItem("userToken")
   const token = "w^0V6jJamvLyaBy5VEYQ2x4gzwrx5BifP6wjB/hQDNmDFSJ2//4/4oze7iJuiFrd";
   if (token) {
-    // req.headers["Authorization"] = `Bearer ${token}`;
     req.headers["Token"] = token
   }
   req.headers["Content-Type"] = "multipart/form-data";
@@ -24,31 +25,24 @@ function attachToken(req) {
 }
 
 // functionality for attaching the token with bearer
-function attachToken2(req) {
+function interceptors(req) {
   // const token = localStorage.getItem("userToken")
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiIyVUJQN1l1SzhSZVV2Q1VWU29md0k5ZGhreXN6REkveTFZOTJiTi9YeDU1QUN6bGNIRGNwT055RXJyS2JzTThlSlJwNDlZdGJkVm1lZzBWVituOWJUZ3lDV1c5L1lOcVZIcUVwNTQrWWR6TjUyalJxZjhRUVRwQkNOU1kxUHFIMGlZeC9DMVl2MkxrREM3Yk16Rm1xL200bkVpWFFiQzJiN0dmRUkxcHNmVDhYamtGRzcvOFFRcTBUbmlZVXA3ND0iLCJVc2VySUQiOiIxIiwibmJmIjoxNzA4OTc5OTQ3LCJleHAiOjE3MDkwNjYzNDcsImlhdCI6MTcwODk3OTk0N30.90GxHbHKMvk_3kWJTjGsOhbbgzmzOunxktuA3kd29OY";
   if (token) {
     req.headers["Authorization"] = `Bearer ${token}`;
   }
   return req
 }
 
-export const axiosUserInstance = createInstance("http://localhost:5173");
 export const imageInstance = createInstance("https://sacrosys.net:6662/api/9132");
-export const axiosSiteDetailsInstance = createInstance("https://sacrosys.net:6661/api/2654")
+export const axiosUserInstance = createInstance("https://sacrosys.net:6661/api/2654")
 
-axiosUserInstance.interceptors.request.use((req) => {
-  const config = attachToken(req);
+imageInstance.interceptors.request.use((req) => {
+  const config = FileInterceptors(req);
   return config;
 });
 
-axiosSiteDetailsInstance.interceptors.request.use((req)=>{
-  const config = attachToken2(req)
+axiosUserInstance.interceptors.request.use((req)=>{
+  const config = interceptors(req)
   return config
 })
 
-
-// imageInstance.interceptors.request.use((req) => {
-//   const config = attachToken(req);
-//   return config;
-// });

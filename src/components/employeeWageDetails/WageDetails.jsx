@@ -1,8 +1,6 @@
 import React from "react";
 
 const WageDetails = ({ selectedSuggestion }) => {
-  // console.log(selectedSuggestion, " the id fon the paren");
-  // console.log(selectedSuggestion[0].dailyWage)
   return (
     <>
       <div className="grid gap-4 shadow-special  rounded-xl m-5 p-4 ">

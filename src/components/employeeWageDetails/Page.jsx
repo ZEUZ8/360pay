@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 import WageDetails from "./WageDetails";
 import { FaChevronDown, FaCircleRight } from "react-icons/fa6";
 import SearchResultsList from "./SearchResultsList";
-import { getEmployeeWageData } from "../../Api/services/userServices";
-import { axiosSiteDetailsInstance } from "../../Api/axios";
+import { getEmployeeList, getEmployeeWageData,  } from "../../Api/services/userServices";
+
 
 const Page = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState("");
-  const [userId, setUserId] = useState(null);
+  const [selectUser,setSelectedUser] = useState('')
   const [show, setShow] = useState(false);
   const [suggestionCount, setSuggestionCound] = useState(0);
 
   // function that attached to the Detail click in the userWageDetails and waiting for the funtionality
   const handleClick = () => {
-    console.log("function for api call");
+    console.log(selectedSuggestion , 'the selected suggestion')
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await axiosSiteDetailsInstance.get(
-          "/getemployeeMasterList"
-        );
+        const response = await getEmployeeList()
         if (response?.data?.isSuccess) {
           setResults(response?.data?.data);
           setSuggestions(response?.data?.data);
@@ -44,13 +42,19 @@ const Page = () => {
       // Convert both names to lowercase for case-insensitive comparison
       return employee.empName.toLowerCase().startsWith(value.toLowerCase());
     });
-    setSuggestions(filteredEmployees);
+    if(filteredEmployees.length>0){
+      setSuggestions(filteredEmployees);
+    }else{
+      setShow(false)
+    }
   };
+
 
   useEffect(() => {
     if (input) {
       results.map(async (result) => {
         if (result.empName.toLowerCase() === input.toLowerCase()) {
+          setSelectedUser(result)
           try {
             const response = await getEmployeeWageData(result);
             if (response.data.message === "Success") {
@@ -63,6 +67,7 @@ const Page = () => {
       });
     } else {
       setSelectedSuggestion("");
+      setSelectedUser("")
     }
   }, [input]);
 
@@ -126,7 +131,7 @@ const Page = () => {
                   alt=""
                 />
                 <div className="flex gap-0 justify-center items-center pt-2">
-                  <h1 className=" p-3 text-center">userName</h1>
+                  <h1 className=" p-3 text-center">{selectUser ? selectUser?.empName : "userName"}</h1>
                   <img
                     className="w-4 h-4"
                     src="./imgs/yes.png"

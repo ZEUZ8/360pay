@@ -24,8 +24,9 @@ const Table = () => {
           </div>
         </div>
       )}
-      <div className="mt-2 overflow-y-auto h-full rounded-md max-h-[20rem] border-2">
-        <table className="w-[100%] md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm ">
+      <div>
+      <div className="mt-2   rounded-md  border-2">
+        <table className=" md:w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400 rounded-sm ">
           <thead className="text-xs text-gray-700   bg-gray-800 sticky top-0 z-10">
             <tr>
               <th
@@ -117,6 +118,7 @@ const Table = () => {
             </tr>
           </tfoot>
         </table>
+      </div>
       </div>
     </div>
   );

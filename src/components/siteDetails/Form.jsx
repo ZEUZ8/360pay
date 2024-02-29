@@ -189,7 +189,7 @@ const Form = ({ setDuplicateError }) => {
       <div className="grid grid-cols-10 gap-5 ">
         <button
           className="green_Linear_gradient col-span-3 col-start-3 w-full text-white  grid  bg-[#02345D] focus:ring-2 
-          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center "
           type="button"
           onClick={handleHistory}
         >

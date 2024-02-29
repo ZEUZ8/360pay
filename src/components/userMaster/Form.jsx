@@ -126,7 +126,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           id="userName"
           className={`${
             errors.userName && touched.userName && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  outline-none`}
           value={values.userName}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -146,7 +146,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           id="password"
           className={`${
             errors.password && touched.password && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none`}
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -166,7 +166,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           value={values.authorization}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
         >
           <option value="" >
             Privilage

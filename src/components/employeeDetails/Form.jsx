@@ -21,8 +21,14 @@ const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
 
   //state for photo storing
-  const { photo, setPhoto, name, setUserName, loading, setLoading } =useContext(AppContext);
-  const [wageTypes,setWageTypes] = useState(["Hourly","Weekly","Daily","Monthly"])
+  const { photo, setPhoto, name, setUserName, loading, setLoading } =
+    useContext(AppContext);
+  const [wageTypes, setWageTypes] = useState([
+    "Hourly",
+    "Weekly",
+    "Daily",
+    "Monthly",
+  ]);
 
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -216,88 +222,100 @@ const Form = ({ image, setImage }) => {
           </h1>
         )}
       </div>
-
-     <div className={`mb-2 ${errors.dailyWage && touched.dailyWage && values.dailyWage.length > 0 && "mb-2" } grid grid-cols-12 gap-3`}>
-     
-      <div className="col-span-8">
-        <input
-          type="text"
-          id="dailyWage"
-          value={values.dailyWage}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          className={`${
-            errors.dailyWage && touched.dailyWage && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
-          placeholder={
-            errors.dailyWage && touched.dailyWage
-              ? `Wage ${errors.dailyWage}`
-              : "Wage"
-          }
-        />
-        {errors.dailyWage &&
-          touched.dailyWage &&
-          values.dailyWage.length > 0 && (
-            <h1 className="text-xs  text-rose-500 animate-pulse px-2">
-              {errors.dailyWage}
+      <div
+        className={`mb-4 ${
+          errors.mobile && touched.mobile && values.mobile.length > 0 && "mb-2"
+        }`}
+      >
+        <div className="col-span-4 bg-pink-50 rounded-lg">
+          <select
+            id="wageType"
+            // value={values.authorization}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={` bg-gray-100 text-xs placeholder:text-gray-400 placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+          >
+            <option value="" className="text-gray-200" hidden>
+              Employee Type
+            </option>
+            {wageTypes.map((wage) => (
+              <option
+                value={wage}
+                key={wage}
+                className="text-sm font-semibold text-gray-200"
+              >
+                {wage}
+              </option>
+            ))}
+          </select>
+          {errors.dailyWage && touched.dailyWage && (
+            <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
+              {/* {errors.authorization} */}
             </h1>
           )}
-      </div>
-      <div className="col-span-4 bg-pink-50 rounded-lg">
-      <select
-          id="wageType"
-          // value={values.authorization}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
-        >
-          <option value="" >
-            Type Of Wage
-          </option>
-          {wageTypes.map((wage) => (
-            <option value={wage} key={wage} className="">
-              {wage}
-            </option>
-          ))}
-        </select>
-        {errors.dailyWage && touched.dailyWage && (
-          <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
-            {/* {errors.authorization} */}
-          </h1>
-        )}
-      </div>
-     </div>
-      <div className="flex justify-start align-middle items-center gap-4 mb-2 px-3">
-        <div class="flex items-center">
-          <input
-            id="default-radio-1"
-            type="radio"
-            value=""
-            name="default-radio"
-            class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label
-            for="default-radio-1"
-            class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
-          >
-            Overdue
-          </label>
         </div>
-        <div class="flex items-center">
+      </div>
+
+      <div
+        className={`mb-4 ${
+          errors.dailyWage &&
+          touched.dailyWage &&
+          values.dailyWage.length > 0 &&
+          "mb-2"
+        } grid grid-cols-12 gap-3`}
+      >
+        <div className="col-span-8">
           <input
-            checked
-            id="default-radio-2"
-            type="radio"
-            value=""
-            name="default-radio"
-            class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            type="text"
+            id="dailyWage"
+            value={values.dailyWage}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            className={`${
+              errors.dailyWage &&
+              touched.dailyWage &&
+              `placeholder:text-red-500`
+            } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+            placeholder={
+              errors.dailyWage && touched.dailyWage
+                ? `Wage ${errors.dailyWage}`
+                : "Wage"
+            }
           />
-          <label
-            for="default-radio-2"
-            class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+          {errors.dailyWage &&
+            touched.dailyWage &&
+            values.dailyWage.length > 0 && (
+              <h1 className="text-xs  text-rose-500 animate-pulse px-2">
+                {errors.dailyWage}
+              </h1>
+            )}
+        </div>
+        <div className="col-span-4 bg-pink-50 rounded-lg">
+          <select
+            id="wageType"
+            // value={values.authorization}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={` bg-gray-100 text-xs placeholder:text-xs placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
           >
-            Not Overdue
-          </label>
+            <option value="" hidden>
+              Wage Type
+            </option>
+            {wageTypes.map((wage) => (
+              <option
+                value={wage}
+                key={wage}
+                className="text-sm font-semibold "
+              >
+                {wage}
+              </option>
+            ))}
+          </select>
+          {errors.dailyWage && touched.dailyWage && (
+            <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
+              {/* {errors.authorization} */}
+            </h1>
+          )}
         </div>
       </div>
       <div
@@ -328,6 +346,41 @@ const Form = ({ image, setImage }) => {
             {errors.address}
           </h1>
         )}
+      </div>
+      <div className="mb-4">
+        <div className="flex justify-start align-middle items-center gap-4  px-3">
+          <div class="flex items-center">
+            <input
+              id="default-radio-1"
+              type="radio"
+              value=""
+              name="default-radio"
+              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              for="default-radio-1"
+              class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+            >
+              Overdue
+            </label>
+          </div>
+          <div class="flex items-center">
+            <input
+              checked
+              id="default-radio-2"
+              type="radio"
+              value=""
+              name="default-radio"
+              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              for="default-radio-2"
+              class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+            >
+              Not Overdue
+            </label>
+          </div>
+        </div>
       </div>
 
       {/* image uploading section */}
@@ -415,7 +468,7 @@ const Form = ({ image, setImage }) => {
       <div className="grid grid-cols-10 gap-5 ">
         <button
           className="green_Linear_gradient col-span-3 col-start-3 w-full text-white  grid  bg-[#02345D] focus:ring-2 
-          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center"
           type="button"
           onClick={handleHistory}
         >

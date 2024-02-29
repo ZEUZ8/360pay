@@ -22,11 +22,17 @@
   background: linear-gradient(180deg, #72C562, #60B670);
 }
 .linear_gradient3{
-  background: linear-gradient(180deg, #42AFDB, #2376A2);
+  background: linear-gradient(180deg, #d2dd71, #eaea5b);
 }
 .linear_gradient4{
+  background: linear-gradient(180deg, #42AFDB, #2376A2);
+}
+.linear_gradient5{
   background: linear-gradient(180deg, #FF0F0F, #FF0404);
 }
+
+
+
 
 .green_Linear_gradient{
   background: linear-gradient(180deg,#87f08e,#66BB6C);

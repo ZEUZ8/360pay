@@ -21,7 +21,8 @@ const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
 
   //state for photo storing
-  const { photo, setPhoto, name, setUserName ,loading,setLoading} = useContext(AppContext);
+  const { photo, setPhoto, name, setUserName, loading, setLoading } =useContext(AppContext);
+  const [wageTypes,setWageTypes] = useState(["Hourly","Weekly","Daily","Monthly"])
 
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -30,7 +31,6 @@ const Form = ({ image, setImage }) => {
   const [documentFile, setDocumentFile] = useState("");
   const [documentName, setDocumentName] = useState("");
   const [fileError, setFileError] = useState("");
-
 
   const fileInputRef = useRef(null);
   const photoInputRef = useRef(null);
@@ -44,8 +44,8 @@ const Form = ({ image, setImage }) => {
     } else {
       setPhotoError("");
       if (file) {
-        setLoading(true)
-        setLoading(true)
+        setLoading(true);
+        setLoading(true);
         setPhotoName(file);
         if (photo) {
           (async function () {
@@ -56,11 +56,11 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
           setImage(response?.data?.FileDetails[0]);
-          setLoading(false)
+          setLoading(false);
         } else {
           toast.error("Something went wrong");
         }
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -75,7 +75,7 @@ const Form = ({ image, setImage }) => {
     } else {
       setFileError("");
       if (file) {
-        setLoading(true)
+        setLoading(true);
         setDocumentName(file);
         if (documentFile) {
           (async () => {
@@ -86,7 +86,7 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response.status === 200) {
           setDocumentFile(response.data.FileDetails[0]);
         }
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -94,7 +94,7 @@ const Form = ({ image, setImage }) => {
   const onSubmit = async () => {
     if (photo) {
       try {
-        setLoading(true)
+        setLoading(true);
         const data = {
           opMode: "I",
           empId: 0,
@@ -115,8 +115,8 @@ const Form = ({ image, setImage }) => {
         }
       } catch (err) {
         // console.log(err, " error in the onSubmit of the employee Details");
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -158,9 +158,9 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  const handleHistory = ()=>{
-    console.log('user clicked the history button')
-  }
+  const handleHistory = () => {
+    console.log("user clicked the history button");
+  };
 
   return (
     <form>
@@ -217,14 +217,9 @@ const Form = ({ image, setImage }) => {
         )}
       </div>
 
-      <div
-        className={`mb-4 ${
-          errors.dailyWage &&
-          touched.dailyWage &&
-          values.dailyWage.length > 0 &&
-          "mb-2"
-        }`}
-      >
+     <div className={`mb-2 ${errors.dailyWage && touched.dailyWage && values.dailyWage.length > 0 && "mb-2" } grid grid-cols-12 gap-3`}>
+     
+      <div className="col-span-8">
         <input
           type="text"
           id="dailyWage"
@@ -248,7 +243,63 @@ const Form = ({ image, setImage }) => {
             </h1>
           )}
       </div>
-
+      <div className="col-span-4 bg-pink-50 rounded-lg">
+      <select
+          id="wageType"
+          // value={values.authorization}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+        >
+          <option value="" >
+            Type Of Wage
+          </option>
+          {wageTypes.map((wage) => (
+            <option value={wage} key={wage} className="">
+              {wage}
+            </option>
+          ))}
+        </select>
+        {errors.dailyWage && touched.dailyWage && (
+          <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
+            {/* {errors.authorization} */}
+          </h1>
+        )}
+      </div>
+     </div>
+      <div className="flex justify-start align-middle items-center gap-4 mb-2 px-3">
+        <div class="flex items-center">
+          <input
+            id="default-radio-1"
+            type="radio"
+            value=""
+            name="default-radio"
+            class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            for="default-radio-1"
+            class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+          >
+            Overdue
+          </label>
+        </div>
+        <div class="flex items-center">
+          <input
+            checked
+            id="default-radio-2"
+            type="radio"
+            value=""
+            name="default-radio"
+            class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            for="default-radio-2"
+            class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+          >
+            Not Overdue
+          </label>
+        </div>
+      </div>
       <div
         className={`mb-4 ${
           errors.address &&

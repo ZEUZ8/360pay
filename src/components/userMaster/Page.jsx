@@ -3,6 +3,8 @@ import Form from "./Form";
 import Table from "./Table";
 import { AppContext } from "../../Context/AppProvider";
 import { getUserMasterList } from "../../Api/services/userServices";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Page = () => {
   const { users, setUsers } = useContext(AppContext);
@@ -21,20 +23,22 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-pink-300 h-[100vh]">
-      <div className="grid max-md:grid-rows-12    md:items-center">
-        <div className="  grid items-end justify-center pb-5 ">
+    <>
+      <div className="">
+      <ToastContainer />
+        <div className="grid items-center justify-center ">
           <img
-            src="/imgs/256x256.png"
+            src="/imgs/192x192.png"
             alt="icon"
             onClick={() => navigate("/")}
           />
         </div>
-        <div className="bg-green-300  grid grid-cols-6">
-          <div className="col-span-6 md:col-span-3 max-md:row-start-5  mx-12 max-md:w-full">
+        <div className="  grid md:grid-cols-6">
+          <div className="col-span-6 md:col-span-3  p-4 max-md:w-full">
             <div
               className={`${
-                duplicateUser && `flex items-center justify-between bg-purple-400 p-5`
+                duplicateUser &&
+                `flex items-center justify-between bg-purple-400 p-5`
               }`}
             >
               <h1 className=" pb-2 xl:text-xl font-medium">User Master</h1>
@@ -50,14 +54,14 @@ const Page = () => {
               users={users}
             />
           </div>
-          <div className="col-span-6 md:col-span-3 p-3 bg-yellow-400">
-          <div className="max-h-[70vh] overflow-y-auto">
-            <Table />
+          <div className="col-span-6 md:col-span-3 p-3">
+            <div className="max-h-[40vh] md:max-h-[50vh] overflow-x-auto max-w-[100vw] border-2 rounded-lg">
+              <Table />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

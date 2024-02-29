@@ -1,49 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { siteDetailsValidation } from "../../validation/siteDetails";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { uploadSiteDetails } from "../../Api/services/userServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AppContext } from "../../Context/AppProvider";
 
 const Form = ({ setDuplicateError }) => {
   const navigate = useNavigate();
+  const {loading,setLoading} = useContext(AppContext)
 
   const onSubmit = async (values) => {
-    console.log(values, "submitted in the console");
     // navigate("/employeeDetails")
     try {
-      values.isActive = true
-      values.opMode = "I"
+      setLoading(true)
+      values.isActive = true;
+      values.opMode = "I";
       const response = await uploadSiteDetails(values);
-      console.log(response,' the response in teh value')
       if (response) {
         if (response?.data?.isSuccess) {
+
           setDuplicateError(false);
-          resetForm()
-          navigate("/employeeDetails")
-        } else if(response.response.data.message.includes("Violation of UNIQUE KEY constraint")){
+          resetForm();
+          toast.success("successfully uploaded", {
+            autoClose: 1500,
+            onClose: () => navigate("/employeeDetails"),
+          });
+          // navigate("/employeeDetails");
+        } else if (
+          response.response.data.message.includes(
+            "Violation of UNIQUE KEY constraint"
+          )
+        ) {
           setDuplicateError(true);
-          toast.error("Site Already exists");
+          toast.error("Site Already exists",{
+            autoClose:2000
+          });
         }
       }
-    } catch (error) {
-      console.log(error, " error in siteuploading in site Dtails");
+    }catch (error) {
+      // console.log(error, " error in siteuploading in site Dtails");
+    }finally{
+      setLoading(false)
     }
   };
 
-  const { values, errors, touched, handleSubmit, handleBlur, handleChange,resetForm } =
-    useFormik({
-      initialValues: {
-        siteName: "",
-        ownerName: "",
-        targetWage: "",
-        location: "",
-        mobile: "",
-      },
-      validationSchema: siteDetailsValidation,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      siteName: "",
+      ownerName: "",
+      targetWage: "",
+      location: "",
+      mobile: "",
+    },
+    validationSchema: siteDetailsValidation,
+    onSubmit,
+  });
+
+  const handleHistory = () => {
+    console.log("user clicked the History buton");
+  };
 
   return (
     <div>
@@ -160,13 +185,24 @@ const Form = ({ setDuplicateError }) => {
           </h1>
         )}
       </div>
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className=" text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
-      >
-        History
-      </button>
+
+      <div className="grid grid-cols-10 gap-5 ">
+        <button
+          className="green_Linear_gradient col-span-3 col-start-3 w-full text-white  grid  bg-[#02345D] focus:ring-2 
+          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          type="button"
+          onClick={handleHistory}
+        >
+          History
+        </button>
+        <button
+          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          type="button"
+          onClick={handleSubmit}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };

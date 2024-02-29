@@ -15,7 +15,6 @@ const Page = () => {
       if(image !== "/imgs/person.png" || image !== "/imgs/emptyUser.png"){
         const response = await deleteImage(image.Filename)
         if(response.status){
-          console.log('enterd in the condition')
           setImage(emptyUser)
           setPhoto("");
         }
@@ -23,7 +22,7 @@ const Page = () => {
         setImage(emptyUser)
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     setPhoto("")
   };

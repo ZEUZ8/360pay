@@ -20,18 +20,21 @@
 }
 .linear_gradient2{
   background: linear-gradient(180deg, #72C562, #60B670);
-
 }
 .linear_gradient3{
   background: linear-gradient(180deg, #42AFDB, #2376A2);
-
 }
 .linear_gradient4{
   background: linear-gradient(180deg, #FF0F0F, #FF0404);
-
 }
 
+.green_Linear_gradient{
+  background: linear-gradient(180deg,#87f08e,#66BB6C);
+}
+.blue_Linear_gradient{
+  background: linear-gradient(180deg,#1373c1,#02345D);
 
+}
 
 .shadow-special{
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.165);

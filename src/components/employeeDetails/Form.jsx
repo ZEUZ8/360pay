@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "../../App.css";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { IoIosClose } from "react-icons/io";
 import { employeeDetailsValidation } from "../../validation/employeeDetails";
 import { Formik, useFormik } from "formik";
@@ -23,8 +21,7 @@ const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
 
   //state for photo storing
-  const [loading,setLoading] = useState(false)
-  const { photo, setPhoto, name, setUserName } = useContext(AppContext);
+  const { photo, setPhoto, name, setUserName ,loading,setLoading} = useContext(AppContext);
 
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -33,7 +30,7 @@ const Form = ({ image, setImage }) => {
   const [documentFile, setDocumentFile] = useState("");
   const [documentName, setDocumentName] = useState("");
   const [fileError, setFileError] = useState("");
-  const [prevFile, setPrevFile] = useState("");
+
 
   const fileInputRef = useRef(null);
   const photoInputRef = useRef(null);
@@ -47,6 +44,8 @@ const Form = ({ image, setImage }) => {
     } else {
       setPhotoError("");
       if (file) {
+        setLoading(true)
+        setLoading(true)
         setPhotoName(file);
         if (photo) {
           (async function () {
@@ -57,9 +56,11 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response?.status === 200) {
           setPhoto(response?.data?.FileDetails[0].Filename);
           setImage(response?.data?.FileDetails[0]);
+          setLoading(false)
         } else {
           toast.error("Something went wrong");
         }
+        setLoading(false)
       }
     }
   };
@@ -74,6 +75,7 @@ const Form = ({ image, setImage }) => {
     } else {
       setFileError("");
       if (file) {
+        setLoading(true)
         setDocumentName(file);
         if (documentFile) {
           (async () => {
@@ -84,6 +86,7 @@ const Form = ({ image, setImage }) => {
         if (response?.data?.ImageUploadStatus && response.status === 200) {
           setDocumentFile(response.data.FileDetails[0]);
         }
+        setLoading(false)
       }
     }
   };
@@ -91,6 +94,7 @@ const Form = ({ image, setImage }) => {
   const onSubmit = async () => {
     if (photo) {
       try {
+        setLoading(true)
         const data = {
           opMode: "I",
           empId: 0,
@@ -99,7 +103,7 @@ const Form = ({ image, setImage }) => {
           empAddress: values?.address,
           empWage: values?.dailyWage,
           empImageUrl: image?.FileUrl,
-          empDocument: documentFile ? documentFile?.FileUrl : '',
+          empDocument: documentFile ? documentFile?.FileUrl : "",
           isActive: true,
         };
         const response = await UploadEmployeeDetails(data);
@@ -110,7 +114,9 @@ const Form = ({ image, setImage }) => {
           navigate("/userMaster");
         }
       } catch (err) {
-        console.log(err, " error in the onSubmit of the employee Details");
+        // console.log(err, " error in the onSubmit of the employee Details");
+      }finally{
+        setLoading(false)
       }
     }
   };
@@ -151,6 +157,10 @@ const Form = ({ image, setImage }) => {
       photoInputRef.current.value = ""; // Reset the value of photo input
     }
   };
+
+  const handleHistory = ()=>{
+    console.log('user clicked the history button')
+  }
 
   return (
     <form>
@@ -226,8 +236,8 @@ const Form = ({ image, setImage }) => {
           } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
           placeholder={
             errors.dailyWage && touched.dailyWage
-              ? `Daily Wage ${errors.dailyWage}`
-              : "Daily Wage"
+              ? `Wage ${errors.dailyWage}`
+              : "Wage"
           }
         />
         {errors.dailyWage &&
@@ -330,7 +340,7 @@ const Form = ({ image, setImage }) => {
         />
         <div
           className={`p-3 text-xs col-span-3  grid  items-center ${
-             fileError ? "text-rose-400" : "text-gray-500"
+            fileError ? "text-rose-400" : "text-gray-500"
           }`}
         >
           {fileError.length > 0 ? (
@@ -351,13 +361,23 @@ const Form = ({ image, setImage }) => {
         </div>
       </div>
 
-      <button
-        className=" text-white mx-auto grid bg-[#02345D] focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
-        type="button"
-        onClick={handleSubmit}
-      >
-        Save
-      </button>
+      <div className="grid grid-cols-10 gap-5 ">
+        <button
+          className="green_Linear_gradient col-span-3 col-start-3 w-full text-white  grid  bg-[#02345D] focus:ring-2 
+          focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          type="button"
+          onClick={handleHistory}
+        >
+          History
+        </button>
+        <button
+          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          type="button"
+          onClick={handleSubmit}
+        >
+          Save
+        </button>
+      </div>
     </form>
   );
 };

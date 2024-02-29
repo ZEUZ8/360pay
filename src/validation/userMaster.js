@@ -13,10 +13,9 @@ export const userMasterValidation = yup.object().shape({
         .max(16, 'password should contain 5-16 characters')
         // .matches(passwordRule, 'Please create a stronger password')
         .required('Required'),
-    prvilage: yup
+    authorization: yup
         .string()
-        // .min(2,'Atleast 2 charecters')
-        // .min(1, 'Privilage must not be empty')
-        // .test('notEmpty', 'Empty string is not allowed', value => value.trim() !== '')
-        // .required("Required"),
+        .min(1, 'Privilage must not be empty')
+        .test('notEmpty', 'Empty string is not allowed', value => value.trim() !== '')
+        .required("Required")
 })

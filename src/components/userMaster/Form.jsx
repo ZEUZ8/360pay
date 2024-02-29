@@ -4,40 +4,37 @@ import { userMasterValidation } from "../../validation/userMaster";
 import { IoIosClose } from "react-icons/io";
 import { AppContext } from "../../Context/AppProvider";
 import { postUserMaster } from "../../Api/services/userServices";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 
 const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
-  const { users, setUsers } = useContext(AppContext);
+  const { users, setUsers ,loading,setLoading} = useContext(AppContext);
   const [roles, setRoles] = useState(["admin", "employee"]);
   const [roleError, setRoleError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values) => {
-    // console.log(values,' the avlue in the soneole')
     if (values.authorization) {
       setRoleError(false);
       try {
+        loading(true)
         values.isActive = true;
         values.OpMode = "I";
-        console.log(values.authorization);
         const response = await postUserMaster(values);
         if (response) {
           if (response?.data?.isSuccess) {
             setDuplicateUser(false);
             const userId = response.data.data.match(/\d+$/)[0];
             values.userId = userId;
-            console.log(values, " the values in the cvonsole");
             handleUser(values);
             resetForm();
           } else if (!response?.response?.data.isSuccess) {
-            console.log(" consoling in the after");
             setDuplicateUser(true);
           }
         }
       } catch (err) {
-        console.log(err, " the err");
+        // console.log(err, " the err");
+      }finally{
+        setLoading(false)
       }
     } else {
       setRoleError(true);
@@ -52,13 +49,16 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
   const handleUpdation = async () => {
     if(!roleError){
       try {
+        setLoading(true)
         users.map(async (user) => {
           if (user.userId === values.userId) {
             values.OpMode = "U";
             values.isActive = user.isActive;
-            console.log(values, " at the end ");
             const response = await postUserMaster(values);
             if (response?.data?.isSuccess) {
+              toast.success("Successfully updated",{
+                autoClose:1000
+              })
               setUsers((prev) => {
                 return prev.map((user) => {
                   if(user.userId === values.userId ){
@@ -67,11 +67,15 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
                   return user
                 });
               });
+            }else if(response?.response?.data?.message.includes("Violation of UNIQUE KEY constraint")){
+              toast.error("Oops! Unable to update user due to existing name conflict.")
             }
           }
         });
       } catch (err) {
-        console.log(err, " error in the updation page");
+        // console.log(err, " error in the updation page");
+      }finally{
+        setLoading(false)
       }
       setModal(false);
     }
@@ -106,8 +110,8 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
   }, [values.authorization]);
 
   return (
-    <div className="p-5  rounded-xl shadow-special w-full bg-white ">
-      <ToastContainer />
+    <div className="p-5  rounded-xl shadow-special w-full bg-white">
+       
       {row && (
         <div
           onClick={() => setModal(false)}
@@ -162,21 +166,19 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           value={values.authorization}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`${
-            roleError ? "text-rose-500 animate-pulse" : "text-gray-500"
-          } bg-gray-100    text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
         >
-          <option value="" className="placeholder:text-red-500">
+          <option value="" >
             Privilage
           </option>
           {roles.map((role) => (
-            <option value={role} key={role}>
+            <option value={role} key={role} className="">
               {role}
             </option>
           ))}
         </select>
         {errors.authorization && touched.authorization && (
-          <h1 className="text-xs pt-2 text-rose-500 ">
+          <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
             {errors.authorization}
           </h1>
         )}

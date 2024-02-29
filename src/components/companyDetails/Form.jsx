@@ -7,7 +7,6 @@ import "../.././App.css"
 const Form = () => {
   const navigate = useNavigate()
   const onSubmit = (values) => {
-    console.log(values, " are your sure about this");
     navigate("/siteDetails")
   };
 

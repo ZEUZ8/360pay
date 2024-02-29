@@ -5,19 +5,12 @@ import {
 } from "../axios";
 const token =
   "w^0V6jJamvLyaBy5VEYQ2x4gzwrx5BifP6wjB/hQDNmDFSJ2//4/4oze7iJuiFrd";
-// export const uploadImage = async(image)=>{
-//     try{
-//         const response = await axiosUserInstance.post("/uploadImage",image)
-//         return response
-//     }catch(err){
-//         console.log(err)
-//         return err
-//     }
-// };
+
 
 export const uploadImage = async (file) => {
+  const formData = new FormData()
+  formData.append("imageFiles",file)
   try {
-    const formData = new FormData();
     const response = await imageInstance.post("/UploadImages", formData, {
       headers: {
         Token: token,
@@ -31,15 +24,12 @@ export const uploadImage = async (file) => {
 };
 
 export const deleteImage = async (file) => {
+  console.log(file)
+  // { "fileNames":["638443039782161121_Screenshot 2024-02-11 at 10.57.05 PM.png"] }
   try {
-    const response = await imageInstance.delete("/DeleteImages", {
-      headers: {
-        Token: token,
-      },
+    const response = await imageInstance.delete("/DeleteImages",{
       data: { fileNames: [file] },
-      // No need for Content-Type or request body for DELETE requests
     });
-
     return response.data;
   } catch (err) {
     return err;

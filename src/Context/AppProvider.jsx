@@ -10,14 +10,17 @@ const AppProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [photo, setPhoto] = useState('');
   const [name,setUserName] = useState('');
+  const [loading,setLoading] = useState(false)
 
   const value = {
     photo,
     users,
     name,
-    setUserName,
+    loading,
     setPhoto,
     setUsers,
+    setUserName,
+    setLoading
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

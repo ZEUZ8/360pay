@@ -20,7 +20,9 @@ function FileInterceptors(req) {
   if (token) {
     req.headers["Token"] = token
   }
-  req.headers["Content-Type"] = "multipart/form-data";
+  if(req?.url !== "/DeleteImages"){
+    req.headers["Content-Type"] = "multipart/form-data";
+  }
   return req
 }
 

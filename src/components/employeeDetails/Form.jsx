@@ -17,17 +17,18 @@ import {
   uploadImage,
 } from "../../Api/services/userServices";
 
+import "./style.css"
+
 const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
 
   //state for photo storing
   const { photo, setPhoto, name, setUserName, loading, setLoading } =
     useContext(AppContext);
-  const [wageTypes, setWageTypes] = useState([
-    "Hourly",
-    "Weekly",
-    "Daily",
-    "Monthly",
+  const [wageTypes, setWageTypes] = useState(["Hourly", "Daily", "Monthly"]);
+  const [employeeTypes, setEmployeeTypes] = useState([
+    "permanent",
+    "Temporary",
   ]);
 
   const [photoName, setPhotoName] = useState("");
@@ -108,6 +109,8 @@ const Form = ({ image, setImage }) => {
           empMobileNo: values?.mobile,
           empAddress: values?.address,
           empWage: values?.dailyWage,
+          employeeType: values?.employeeType,
+          wageType: values?.wageType,
           empImageUrl: image?.FileUrl,
           empDocument: documentFile ? documentFile?.FileUrl : "",
           isActive: true,
@@ -141,6 +144,8 @@ const Form = ({ image, setImage }) => {
       mobile: "",
       address: "",
       dailyWage: "",
+      employeeType: "",
+      wageType: "",
       photo: "",
       document: "",
     },
@@ -222,6 +227,7 @@ const Form = ({ image, setImage }) => {
           </h1>
         )}
       </div>
+      {/*  the input that need to update for the  Employee type  */}
       <div
         className={`mb-4 ${
           errors.mobile && touched.mobile && values.mobile.length > 0 && "mb-2"
@@ -229,26 +235,20 @@ const Form = ({ image, setImage }) => {
       >
         <div className="col-span-4 bg-pink-50 rounded-lg">
           <select
-            id="wageType"
-            // value={values.authorization}
+            id="employeeType"
+            value={values.employeeType}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={` bg-gray-100 text-xs placeholder:text-gray-400 placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+            className={` bg-gray-100 text-xs text-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
           >
-            <option value="" className="text-gray-200" hidden>
-              Employee Type
-            </option>
-            {wageTypes.map((wage) => (
-              <option
-                value={wage}
-                key={wage}
-                className="text-sm font-semibold text-gray-200"
-              >
-                {wage}
+            <option hidden value="" className="">Employee Types</option>
+            {employeeTypes.map((role) => (
+              <option value={role} key={role} className="text-black">
+                {role}
               </option>
             ))}
           </select>
-          {errors.dailyWage && touched.dailyWage && (
+          {errors.employeeType && touched.employeeType && (
             <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
               {/* {errors.authorization} */}
             </h1>
@@ -264,7 +264,7 @@ const Form = ({ image, setImage }) => {
           "mb-2"
         } grid grid-cols-12 gap-3`}
       >
-        <div className="col-span-8">
+        <div className="col-span-6 lg:col-span-8">
           <input
             type="text"
             id="dailyWage"
@@ -275,7 +275,7 @@ const Form = ({ image, setImage }) => {
               errors.dailyWage &&
               touched.dailyWage &&
               `placeholder:text-red-500`
-            } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+            } bg-gray-100  text-gray-400 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
             placeholder={
               errors.dailyWage && touched.dailyWage
                 ? `Wage ${errors.dailyWage}`
@@ -290,23 +290,20 @@ const Form = ({ image, setImage }) => {
               </h1>
             )}
         </div>
-        <div className="col-span-4 bg-pink-50 rounded-lg">
+        <div className=" col-span-6 lg:col-span-4 bg-pink-50 rounded-lg">
           <select
             id="wageType"
-            // value={values.authorization}
+            value={values.wageType}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={` bg-gray-100 text-xs placeholder:text-xs placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+            // disabled
+            className={` bg-gray-100 text-xs text-gray-600 placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
           >
-            <option value="" hidden>
+            <option value="" className="text-gray-300" hidden>
               Wage Type
             </option>
             {wageTypes.map((wage) => (
-              <option
-                value={wage}
-                key={wage}
-                className="text-sm font-semibold "
-              >
+              <option value={wage} key={wage}>
                 {wage}
               </option>
             ))}
@@ -475,7 +472,7 @@ const Form = ({ image, setImage }) => {
           History
         </button>
         <button
-          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center"
           type="button"
           onClick={handleSubmit}
         >

@@ -196,7 +196,7 @@ const Form = ({ setDuplicateError }) => {
           History
         </button>
         <button
-          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center "
+          className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center"
           type="button"
           onClick={handleSubmit}
         >

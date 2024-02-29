@@ -166,7 +166,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           value={values.authorization}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={` bg-gray-100 text-xs  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
+          className={` bg-gray-100 text-xs text-gray-400  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
         >
           <option value="" >
             Privilage

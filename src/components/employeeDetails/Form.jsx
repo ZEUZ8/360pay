@@ -7,6 +7,7 @@ import { employeeDetailsValidation } from "../../validation/employeeDetails";
 import { Formik, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/AppProvider";
+import { Select } from "antd";
 import {
   FileValidation,
   ImageValidation,
@@ -29,6 +30,15 @@ const Form = ({ image, setImage }) => {
     "Permanent",
     "Temporary",
   ]);
+  const options = employeeTypes.map(type => ({
+    value: type,
+    label: type
+  }));
+  const WageOptions = wageTypes.map(type => ({
+    value: type,
+    label: type
+  }));
+  
   const [employeeType, setEmployeeType] = useState("");
   const [wageType, setWageType] = useState("");
   const [wageTypeError, setWageTypeError] = useState(false);
@@ -123,7 +133,7 @@ const Form = ({ image, setImage }) => {
           wageType: wageType ? wageType : "",
           empImageUrl: image?.FileUrl,
           empDocument: documentFile ? documentFile?.FileUrl : "",
-          overTime : overTime,
+          overTime: overTime,
           isActive: true,
         };
         const response = await UploadEmployeeDetails(data);
@@ -143,6 +153,10 @@ const Form = ({ image, setImage }) => {
       }
     }
   };
+
+  useEffect(()=>{
+    console.log(employeeType,' teh avleu in teh console')
+  },[employeeType])
 
   const {
     values,
@@ -186,19 +200,20 @@ const Form = ({ image, setImage }) => {
   };
 
   const handleEmployeeType = async (event) => {
-    if (event?.target?.value) {
+    if (event) {
       setEmployeeTypeError(false);
-      setEmployeeType(event.target.value);
-      if (event.target.value === "Permanent") {
+      setEmployeeType(event);
+      if (event === "Permanent") {
         setWageType("Monthly");
+        setWageTypeError(false)
       }
     }
   };
 
   const handleWagetype = async (event) => {
-    if (event?.target?.value) {
+    if (event) {
       setWageTypeError(false);
-      setWageType(event.target.value);
+      setWageType(event);
     }
   };
 
@@ -262,8 +277,8 @@ const Form = ({ image, setImage }) => {
           errors.mobile && touched.mobile && values.mobile.length > 0 && "mb-2"
         }`}
       >
-        <div className="col-span-4 bg-pink-50 rounded-lg">
-          <select
+        <div className="col-span-4  rounded-lg">
+          {/* <select
             id="employeeType"
             value={employeeType}
             onChange={handleEmployeeType}
@@ -275,18 +290,27 @@ const Form = ({ image, setImage }) => {
             <option value="" className="text-pink-200" hidden>
               Employee Types
             </option>
-            {employeeTypes.map((role,i) => (
+            {employeeTypes.map((role, i) => (
               <option value={role} key={i} className="text-black">
                 {role}
               </option>
             ))}
-          </select>
+          </select> */}
+          <Select
+            className="w-full h-[2.5rem]"
+            placeholder="Employee Type"
+            variant="filled"
+            value={options.find(option => option.value === employeeType)}
+            onChange={handleEmployeeType}
+            style={{ flex: 1 }}
+            options={options}
+          />
         </div>
-          {employeeTypeError && (
-            <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
-              Required
-            </h1>
-          )}
+        {employeeTypeError && (
+          <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
+            Required
+          </h1>
+        )}
       </div>
 
       <div
@@ -297,7 +321,44 @@ const Form = ({ image, setImage }) => {
           "mb-2"
         } grid grid-cols-12 gap-3`}
       >
-        <div className="col-span-6 lg:col-span-8">
+           <div className=" col-span-6 rounded-lg">
+          {/* <select
+            id="wageType"
+            value={wageType}
+            onChange={handleWagetype}
+            // onBlur={handleBlur}
+            disabled={employeeType === "Permanent"}
+            className={` bg-gray-100 text-xs ${
+              wageType ? "text-black" : "text-gray-400 "
+            } placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   outline-blue-300`}
+          >
+            <option value="" className="text-gray-300" hidden>
+              Wage Type
+            </option>
+            {wageTypes.map((wage, i) => (
+              <option value={wage} key={i}>
+                {wage}
+              </option>
+            ))}
+          </select> */}
+          <Select
+            className="w-full h-[2.5rem]"
+            placeholder="Wage Type"
+            variant="filled"
+            value={WageOptions.find(option => option.value === wageType)}
+            onChange={handleWagetype}
+            style={{ flex: 1 }}
+            options={WageOptions}
+            disabled={employeeType === "Permanent"}
+          />
+          {wageTypeError && (
+            <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
+              Required
+            </h1>
+          )}
+        </div>
+
+        <div className="col-span-6 ">
           <input
             type="text"
             id="dailyWage"
@@ -323,32 +384,7 @@ const Form = ({ image, setImage }) => {
               </h1>
             )}
         </div>
-        <div className=" col-span-6 lg:col-span-4 bg-pink-50 rounded-lg">
-          <select
-            id="wageType"
-            value={wageType}
-            onChange={handleWagetype}
-            // onBlur={handleBlur}
-            disabled={employeeType === "Permanent"}
-            className={` bg-gray-100 text-xs ${
-              wageType ? "text-black" : "text-gray-400 "
-            } placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   outline-blue-300`}
-          >
-            <option value="" className="text-gray-300" hidden>
-              Wage Type
-            </option>
-            {wageTypes.map((wage,i) => (
-              <option value={wage} key={i}>
-                {wage}
-              </option>
-            ))}
-          </select>
-          {wageTypeError && (
-            <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
-              Required
-            </h1>
-          )}
-        </div>
+     
       </div>
       <div
         className={`mb-4 ${
@@ -380,28 +416,30 @@ const Form = ({ image, setImage }) => {
         )}
       </div>
       <div className="mb-4">
-        <div className="flex justify-start align-middle items-center gap-4  px-3">
+        <h1 className="px-3 pb-2 text-[12px] underline underline-offset-2">Over Time</h1>
+        <div className="flex justify-start align-middle items-center gap-4  px-4">
           <div className="flex items-center">
             <input
               id="ovetTime"
               type="radio"
               value={true}
               checked={overTime === true}
-              onChange={()=>setOverTime(true)}
+              onChange={() => setOverTime(true)}
               name="default-radio"
               className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
+            onClick={()=>setOverTime(true)}
               htmlFor="default-radio-1"
               className="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
             >
-              Overdue
+              Yes
             </label>
           </div>
           <div className="flex items-center">
             <input
               checked={overTime === false}
-              onChange={()=>setOverTime(false)}
+              onChange={() => setOverTime(false)}
               id="overTime"
               type="radio"
               value={false}
@@ -409,10 +447,11 @@ const Form = ({ image, setImage }) => {
               className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
+            onClick={()=>setOverTime(false)}
               htmlFor="default-radio-2"
               className="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
             >
-              Not Overdue
+              No
             </label>
           </div>
         </div>
@@ -438,7 +477,9 @@ const Form = ({ image, setImage }) => {
         <div className=" text-xs col-span-3  grid  items-center p-3">
           <p
             className={`font-light ${
-              !photo || photoError ? "text-rose-400 animate-bounce" : `text-gray-500`
+              !photo || photoError
+                ? "text-rose-400 animate-bounce"
+                : `text-gray-500`
             } `}
           >
             {photoError.length > 0

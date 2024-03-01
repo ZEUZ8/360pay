@@ -7,22 +7,27 @@
     "background_color":"#ffffff",
     "icons":[
         {
-            "src":"/imgs/icon-128x128.png",
+            "src":"/imgs/192x192.png",
             "type":"image/png",
-            "sizes":"128x128"
+            "sizes":"192x192"
         },
         {
-            "src":"/imgs/icon-144x144.png",
+            "src":"/imgs/256x256.png",
             "type":"image/png",
-            "sizes":"144x144"
+            "sizes":"256x256"
         },
         {
-            "src":"/imgs/icon-152x152.png",
+            "src":"/imgs/384x384.png",
             "type":"image/png",
-            "sizes":"152x152"
+            "sizes":"384x384"
         },
         {
-            "src":"/imgs/maskable_icon.png",
+            "src":"/imgs/512x512.png",
+            "type":"image/png",
+            "sizes":"512x512"
+        },
+        {
+            "src":"/imgs/192x192.png",
             "typ":"image/png",
             "sizes":"192X192",
             "purpose":"maskable"

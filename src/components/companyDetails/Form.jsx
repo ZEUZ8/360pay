@@ -2,13 +2,20 @@ import React from "react";
 import { companyDetailsValidation } from "../../validation/companyDetails";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../.././App.css"
 
-const Form = () => {
+const  Form = () => {
   const navigate = useNavigate()
   const onSubmit = (values) => {
-    navigate("/siteDetails")
+    if(values){
+      toast.success("Succesfully Uploaded",{
+        autoClose:1000,
+        onClose:()=>navigate("/siteDetails")
+      })
+    }
   };
+
 
   const { values, errors, touched, handleSubmit, handleBlur, handleChange ,resetForm} =
     useFormik({
@@ -31,7 +38,7 @@ const Form = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           id="clientId"
-          className={`${errors.clientId && touched.clientId && `placeholder:text-red-500`} bg-gray-100 cursor-pointer text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          className={`${errors.clientId && touched.clientId && `placeholder:text-red-500`} bg-gray-100 cursor-pointer outline-blue-300 text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
           placeholder={errors.clientId && touched.clientId ? `Client Id  ${errors.clientId}` : "Client ID"}
         />
         {errors.clientId && touched.clientId && values.clientId.length>0 &&(
@@ -45,7 +52,7 @@ const Form = () => {
           value={values.name}
           onBlur={handleBlur}
           onChange={handleChange}
-          className={`${errors.name && touched.name && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          className={`${errors.name && touched.name && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer  outline-blue-300  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.name && touched.name ? `Name  ${errors.name}` : "Name"}
         />
         {errors.name && touched.name && values.name.length>0&&(
@@ -59,7 +66,7 @@ const Form = () => {
           value={values.address}
           onBlur={handleBlur}
           onChange={handleChange}
-          className={`${errors.address && touched.address && `placeholder:text-red-500`} bg-gray-100 cursor-pointer text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          className={`${errors.address && touched.address && `placeholder:text-red-500`} bg-gray-100 cursor-pointer outline-blue-300  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.address && touched.address ? `Address  ${errors.address}`: "Address"}
         />
         {errors.address && touched.address && values.address.length > 0 &&(
@@ -73,7 +80,7 @@ const Form = () => {
           value={values.mobile}
           onBlur={handleBlur}
           onChange={handleChange}
-          className={`${errors.mobile && touched.mobile && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
+          className={`${errors.mobile && touched.mobile && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer outline-blue-300  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5    `}
           placeholder={errors.mobile && touched.mobile ? `Mobile  ${errors.mobile}` : "Mobile"}
         />
         {errors.mobile && touched.mobile && values.mobile &&(
@@ -87,7 +94,7 @@ const Form = () => {
           value={values.ownerName}
           onBlur={handleBlur}
           onChange={handleChange}
-          className={`${errors.ownerName && touched.ownerName && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   `}
+          className={`${errors.ownerName && touched.ownerName && `placeholder:text-red-500`}  bg-gray-100 cursor-pointer outline-blue-300  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   `}
           placeholder={errors.ownerName && touched.ownerName ? `Owner Name  ${errors.ownerName}` : "Owner Name"}
         />
         {errors.ownerName && touched.ownerName && values.ownerName.length>0 &&(

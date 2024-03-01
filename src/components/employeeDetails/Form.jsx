@@ -16,8 +16,7 @@ import {
   deleteImage,
   uploadImage,
 } from "../../Api/services/userServices";
-
-import "./style.css"
+import "./style.css";
 
 const Form = ({ image, setImage }) => {
   const navigate = useNavigate();
@@ -27,9 +26,14 @@ const Form = ({ image, setImage }) => {
     useContext(AppContext);
   const [wageTypes, setWageTypes] = useState(["Hourly", "Daily", "Monthly"]);
   const [employeeTypes, setEmployeeTypes] = useState([
-    "permanent",
+    "Permanent",
     "Temporary",
   ]);
+  const [employeeType, setEmployeeType] = useState("");
+  const [wageType, setWageType] = useState("");
+  const [wageTypeError, setWageTypeError] = useState(false);
+  const [employeeTypeError, setEmployeeTypeError] = useState(false);
+  const [overTime, setOverTime] = useState(false);
 
   const [photoName, setPhotoName] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -99,7 +103,14 @@ const Form = ({ image, setImage }) => {
   };
 
   const onSubmit = async () => {
-    if (photo) {
+    console.log('the name')
+    if (!wageType) {
+      setWageTypeError(true);
+    }
+    if (!employeeType) {
+      setEmployeeTypeError(true);
+    }
+    if (photo && wageType && employeeType) {
       try {
         setLoading(true);
         const data = {
@@ -109,10 +120,11 @@ const Form = ({ image, setImage }) => {
           empMobileNo: values?.mobile,
           empAddress: values?.address,
           empWage: values?.dailyWage,
-          employeeType: values?.employeeType,
-          wageType: values?.wageType,
+          employeeType: employeeType ? employeeType : "",
+          wageType: wageType ? wageType : "",
           empImageUrl: image?.FileUrl,
           empDocument: documentFile ? documentFile?.FileUrl : "",
+          overTime : overTime,
           isActive: true,
         };
         const response = await UploadEmployeeDetails(data);
@@ -120,7 +132,10 @@ const Form = ({ image, setImage }) => {
           resetForm();
           setPhoto("");
           setDocumentFile("");
-          navigate("/userMaster");
+          toast.success("Uploaded", {
+            autoClose: 1000,
+            onClose: () => navigate("/userMaster"),
+          });
         }
       } catch (err) {
         // console.log(err, " error in the onSubmit of the employee Details");
@@ -144,14 +159,16 @@ const Form = ({ image, setImage }) => {
       mobile: "",
       address: "",
       dailyWage: "",
-      employeeType: "",
-      wageType: "",
       photo: "",
       document: "",
     },
     validationSchema: employeeDetailsValidation,
     onSubmit,
   });
+
+  useEffect(() => {
+    console.log(overTime, " the overtime value in teh cosnel");
+  }, [overTime]);
 
   useEffect(() => {
     setUserName(values?.name);
@@ -173,6 +190,23 @@ const Form = ({ image, setImage }) => {
     console.log("user clicked the history button");
   };
 
+  const handleEmployeeType = async (event) => {
+    if (event?.target?.value) {
+      setEmployeeTypeError(false);
+      setEmployeeType(event.target.value);
+      if (event.target.value === "Permanent") {
+        setWageType("Monthly");
+      }
+    }
+  };
+
+  const handleWagetype = async (event) => {
+    if (event?.target?.value) {
+      setWageTypeError(false);
+      setWageType(event.target.value);
+    }
+  };
+
   return (
     <form>
       <ToastContainer />
@@ -189,7 +223,7 @@ const Form = ({ image, setImage }) => {
           id="name"
           className={`${
             errors.name && touched.name && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  outline-blue-300`}
           placeholder={
             errors.name && touched.name ? `Name ${errors.name}` : "Name"
           }
@@ -213,7 +247,7 @@ const Form = ({ image, setImage }) => {
           onBlur={handleBlur}
           className={`${
             errors.mobile && touched.mobile && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  outline-blue-300`}
           placeholder={
             errors.mobile && touched.mobile
               ? `Mobile Number ${errors.mobile}`
@@ -236,24 +270,28 @@ const Form = ({ image, setImage }) => {
         <div className="col-span-4 bg-pink-50 rounded-lg">
           <select
             id="employeeType"
-            value={values.employeeType}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={` bg-gray-100 text-xs text-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
+            value={employeeType}
+            onChange={handleEmployeeType}
+            // onBlur={handleBlur}
+            className={` custom-dropdown bg-gray-100 ${
+              employeeType ? "text-black" : "text-gray-400"
+            } text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
           >
-            <option hidden value="" className="">Employee Types</option>
+            <option value="" className="text-pink-200" hidden>
+              Employee Types
+            </option>
             {employeeTypes.map((role) => (
               <option value={role} key={role} className="text-black">
                 {role}
               </option>
             ))}
           </select>
-          {errors.employeeType && touched.employeeType && (
+        </div>
+          {employeeTypeError && (
             <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
-              {/* {errors.authorization} */}
+              Required
             </h1>
           )}
-        </div>
       </div>
 
       <div
@@ -275,7 +313,7 @@ const Form = ({ image, setImage }) => {
               errors.dailyWage &&
               touched.dailyWage &&
               `placeholder:text-red-500`
-            } bg-gray-100  text-gray-400 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+            } bg-gray-100  text-gray-400 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  outline-blue-300`}
             placeholder={
               errors.dailyWage && touched.dailyWage
                 ? `Wage ${errors.dailyWage}`
@@ -293,11 +331,13 @@ const Form = ({ image, setImage }) => {
         <div className=" col-span-6 lg:col-span-4 bg-pink-50 rounded-lg">
           <select
             id="wageType"
-            value={values.wageType}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            // disabled
-            className={` bg-gray-100 text-xs text-gray-600 placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  `}
+            value={wageType}
+            onChange={handleWagetype}
+            // onBlur={handleBlur}
+            disabled={employeeType === "Permanent"}
+            className={` bg-gray-100 text-xs ${
+              wageType ? "text-black" : "text-gray-400 "
+            } placeholder:font-extralight rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5   outline-blue-300`}
           >
             <option value="" className="text-gray-300" hidden>
               Wage Type
@@ -308,9 +348,9 @@ const Form = ({ image, setImage }) => {
               </option>
             ))}
           </select>
-          {errors.dailyWage && touched.dailyWage && (
+          {wageTypeError && (
             <h1 className="text-xs px-3 animate-pulse pt-1 text-rose-500 ">
-              {/* {errors.authorization} */}
+              Required
             </h1>
           )}
         </div>
@@ -331,7 +371,7 @@ const Form = ({ image, setImage }) => {
           onChange={handleChange}
           className={`${
             errors.address && touched.address && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5  outline-blue-300`}
           placeholder={
             errors.address && touched.address
               ? `Address ${errors.address}`
@@ -348,11 +388,13 @@ const Form = ({ image, setImage }) => {
         <div className="flex justify-start align-middle items-center gap-4  px-3">
           <div class="flex items-center">
             <input
-              id="default-radio-1"
+              id="ovetTime"
               type="radio"
-              value=""
+              value={true}
+              checked={overTime === true}
+              onChange={()=>setOverTime(true)}
               name="default-radio"
-              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
               for="default-radio-1"
@@ -363,12 +405,13 @@ const Form = ({ image, setImage }) => {
           </div>
           <div class="flex items-center">
             <input
-              checked
-              id="default-radio-2"
+              checked={overTime === false}
+              onChange={()=>setOverTime(false)}
+              id="overTime"
               type="radio"
-              value=""
+              value={false}
               name="default-radio"
-              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
               for="default-radio-2"
@@ -387,7 +430,7 @@ const Form = ({ image, setImage }) => {
         </p>
         <input
           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
-               bg-gray-50  dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+               bg-gray-50  dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 outline-blue-300"
           id="photo"
           accept="image/*"
           type="file"
@@ -429,7 +472,7 @@ const Form = ({ image, setImage }) => {
           Document
         </p>
         <input
-          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 outline-blue-300"
           id="document"
           accept=".pdf"
           type="file"
@@ -474,7 +517,7 @@ const Form = ({ image, setImage }) => {
         <button
           className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center"
           type="button"
-          onClick={handleSubmit}
+          onClick={onSubmit}
         >
           Save
         </button>

@@ -54,6 +54,7 @@ export const uploadSiteDetails = async (value) => {
 };
 
 export const UploadEmployeeDetails = async (data) => {
+  console.log(data)
   try {
     const response = axiosUserInstance.post(
       "/postemployeeMasterOP",

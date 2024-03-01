@@ -33,6 +33,5 @@ export const employeeDetailsValidation = yup.object().shape({
     employeeType: yup 
         .string()
         .min(1,"Required")
-        .required("Required")
-   
+        .required("Required")  
 })

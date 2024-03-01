@@ -2,27 +2,36 @@ import React, { cloneElement, useEffect, useState } from "react";
 import WageDetails from "./WageDetails";
 import { FaChevronDown, FaCircleRight } from "react-icons/fa6";
 import SearchResultsList from "./SearchResultsList";
-import { getEmployeeList, getEmployeeWageData,  } from "../../Api/services/userServices";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  getEmployeeList,
+  getEmployeeWageData,
+} from "../../Api/services/userServices";
 
 const Page = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState("");
-  const [selectUser,setSelectedUser] = useState('')
+  const [selectUser, setSelectedUser] = useState("");
   const [show, setShow] = useState(false);
   const [suggestionCount, setSuggestionCound] = useState(0);
 
   // function that attached to the Detail click in the userWageDetails and waiting for the funtionality
   const handleClick = () => {
-    console.log(selectedSuggestion , 'the selected suggestion')
+    if (selectedSuggestion) {
+      toast.success(`Selected ${selectUser?.empName}`)
+      console.log(selectedSuggestion, "the selected suggestion");
+    } else {
+      toast.error("No user Found")
+    }
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await getEmployeeList()
+        const response = await getEmployeeList();
         if (response?.data?.isSuccess) {
           setResults(response?.data?.data);
           setSuggestions(response?.data?.data);
@@ -42,32 +51,31 @@ const Page = () => {
       // Convert both names to lowercase for case-insensitive comparison
       return employee.empName.toLowerCase().startsWith(value.toLowerCase());
     });
-    if(filteredEmployees.length>0){
+    if (filteredEmployees.length > 0) {
       setSuggestions(filteredEmployees);
-    }else{
-      setShow(false)
+    } else {
+      setShow(false);
     }
   };
-
 
   useEffect(() => {
     if (input) {
       results.map(async (result) => {
         if (result.empName.toLowerCase() === input.toLowerCase()) {
-          setSelectedUser(result)
+          setSelectedUser(result);
           try {
             const response = await getEmployeeWageData(result);
             if (response.data.message === "Success") {
               setSelectedSuggestion(response.data.data[0]);
             }
           } catch (err) {
-            throw(err)
+            throw err;
           }
         }
       });
     } else {
       setSelectedSuggestion("");
-      setSelectedUser("")
+      setSelectedUser("");
     }
   }, [input]);
 
@@ -88,6 +96,7 @@ const Page = () => {
   };
   return (
     <>
+      <ToastContainer />
       <div className="grid max-md:grid-rows-10 md:grid-cols-2 h-[100vh]">
         <div className=" grid row-span-5 md:col-span-1">
           <div className="grid justify-center items-end md:items-center ">
@@ -131,7 +140,9 @@ const Page = () => {
                   alt=""
                 />
                 <div className="flex gap-0 justify-center items-center pt-2">
-                  <h1 className=" p-3 text-center">{selectUser ? selectUser?.empName : "userName"}</h1>
+                  <h1 className=" p-3 text-center">
+                    {selectUser ? selectUser?.empName : "userName"}
+                  </h1>
                   <img
                     className="w-4 h-4"
                     src="./imgs/yes.png"

@@ -82,7 +82,7 @@ const Form = ({ setDuplicateError }) => {
           onChange={handleChange}
           className={`${
             errors.siteName && touched.siteName && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-blue-300`}
           placeholder={
             errors.siteName && touched.siteName
               ? `Site Name  ${errors.siteName}`
@@ -106,7 +106,7 @@ const Form = ({ setDuplicateError }) => {
             errors.targetWage &&
             touched.targetWage &&
             `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-blue-300`}
           placeholder={
             errors.targetWage && touched.targetWage
               ? `Target Wage  ${errors.targetWage}`
@@ -128,7 +128,7 @@ const Form = ({ setDuplicateError }) => {
           onChange={handleChange}
           className={`${
             errors.ownerName && touched.ownerName && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-blue-300`}
           placeholder={
             errors.ownerName && touched.ownerName
               ? `Owner Name  ${errors.ownerName}`
@@ -150,7 +150,7 @@ const Form = ({ setDuplicateError }) => {
           onChange={handleChange}
           className={`${
             errors.location && touched.location && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-blue-300`}
           placeholder={
             errors.location && touched.location
               ? `Location  ${errors.location}`
@@ -172,7 +172,7 @@ const Form = ({ setDuplicateError }) => {
           onChange={handleChange}
           className={`${
             errors.mobile && touched.mobile && `placeholder:text-red-500`
-          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 `}
+          } bg-gray-100  text-gray-500 text-xs rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-blue-300`}
           placeholder={
             errors.mobile && touched.mobile
               ? `Contact Number  ${errors.mobile}`

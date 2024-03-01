@@ -1,3 +1,9 @@
-select{
-    appearance: none;
+.custom-dropdown option {
+  background-color: #fff; /* Background color of each option */
+  color: #666363; /* Text color of each option */
+  padding: 8px 12px; /* Padding of each option */
+}
+
+.custom-dropdown option:hover {
+  background-color: #f7f5f5; /* Background color of hovered option */
 }

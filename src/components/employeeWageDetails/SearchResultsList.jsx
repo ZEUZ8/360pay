@@ -19,13 +19,13 @@ const SearchResultsList = ({
       {suggestions.map((suggestion, id) => {
         return (
           <div
+            key={id}
             className={`${
               id === suggestionCount && `text-blue-300 mx-1`
             } cursor-pointer ${
               id !== suggestionCount && "hover:px-3 hover:py-2"
             } p-1`}
             onClick={() => handleClick(suggestion)}
-            key={id}
           >
             {suggestion.empName}
           </div>

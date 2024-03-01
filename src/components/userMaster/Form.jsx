@@ -171,8 +171,8 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           <option value="" >
             Privilage
           </option>
-          {roles.map((role) => (
-            <option value={role} key={role} className="">
+          {roles.map((role,i) => (
+            <option value={role} key={i} className="">
               {role}
             </option>
           ))}

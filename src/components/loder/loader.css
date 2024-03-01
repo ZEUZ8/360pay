@@ -1,8 +1,8 @@
 .spinner {
-    width: 70.4px;
-    height: 70.4px;
-    --clr: rgb(247, 197, 159);
-    --clr-alpha: rgb(247, 197, 159,.1);
+    width: 50.4px;
+    height: 50.4px;
+    --clr: #02345D;
+    --clr-alpha: rgba(36, 86, 147, 0.167);
     animation: spinner 1.6s infinite ease;
     transform-style: preserve-3d;
   }
@@ -12,9 +12,9 @@
     height: 100%;
     position: absolute;
     width: 100%;
-    border: 3.5px solid var(--clr);
+    border: 3px solid var(--clr);
   }
-  
+
   .spinner div:nth-of-type(1) {
     transform: translateZ(-35.2px) rotateY(180deg);
   }

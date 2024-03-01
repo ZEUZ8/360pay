@@ -103,7 +103,6 @@ const Form = ({ image, setImage }) => {
   };
 
   const onSubmit = async () => {
-    console.log('the name')
     if (!wageType) {
       setWageTypeError(true);
     }
@@ -165,10 +164,6 @@ const Form = ({ image, setImage }) => {
     validationSchema: employeeDetailsValidation,
     onSubmit,
   });
-
-  useEffect(() => {
-    console.log(overTime, " the overtime value in teh cosnel");
-  }, [overTime]);
 
   useEffect(() => {
     setUserName(values?.name);
@@ -280,8 +275,8 @@ const Form = ({ image, setImage }) => {
             <option value="" className="text-pink-200" hidden>
               Employee Types
             </option>
-            {employeeTypes.map((role) => (
-              <option value={role} key={role} className="text-black">
+            {employeeTypes.map((role,i) => (
+              <option value={role} key={i} className="text-black">
                 {role}
               </option>
             ))}
@@ -342,8 +337,8 @@ const Form = ({ image, setImage }) => {
             <option value="" className="text-gray-300" hidden>
               Wage Type
             </option>
-            {wageTypes.map((wage) => (
-              <option value={wage} key={wage}>
+            {wageTypes.map((wage,i) => (
+              <option value={wage} key={i}>
                 {wage}
               </option>
             ))}
@@ -386,7 +381,7 @@ const Form = ({ image, setImage }) => {
       </div>
       <div className="mb-4">
         <div className="flex justify-start align-middle items-center gap-4  px-3">
-          <div class="flex items-center">
+          <div className="flex items-center">
             <input
               id="ovetTime"
               type="radio"
@@ -394,16 +389,16 @@ const Form = ({ image, setImage }) => {
               checked={overTime === true}
               onChange={()=>setOverTime(true)}
               name="default-radio"
-              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
+              className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
-              for="default-radio-1"
-              class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+              htmlFor="default-radio-1"
+              className="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
             >
               Overdue
             </label>
           </div>
-          <div class="flex items-center">
+          <div className="flex items-center">
             <input
               checked={overTime === false}
               onChange={()=>setOverTime(false)}
@@ -411,11 +406,11 @@ const Form = ({ image, setImage }) => {
               type="radio"
               value={false}
               name="default-radio"
-              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
+              className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-white rounded-full  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 outline-blue-300"
             />
             <label
-              for="default-radio-2"
-              class="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
+              htmlFor="default-radio-2"
+              className="ms-1 text-xs font-medium text-gray-600 dark:text-gray-400"
             >
               Not Overdue
             </label>
@@ -443,7 +438,7 @@ const Form = ({ image, setImage }) => {
         <div className=" text-xs col-span-3  grid  items-center p-3">
           <p
             className={`font-light ${
-              !photo || photoError ? "text-rose-400" : `text-gray-500`
+              !photo || photoError ? "text-rose-400 animate-bounce" : `text-gray-500`
             } `}
           >
             {photoError.length > 0
@@ -517,7 +512,7 @@ const Form = ({ image, setImage }) => {
         <button
           className="blue_Linear_gradient col-span-3 text-white  grid  focus:ring-2 focus:outline-none font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center justify-center"
           type="button"
-          onClick={onSubmit}
+          onClick={handleSubmit}
         >
           Save
         </button>

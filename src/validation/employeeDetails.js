@@ -4,7 +4,7 @@ import * as yup from "yup"
 const MAX_FILE_SIZE = 102400; //100KB
 const MAX_FILE_SIZES = 1024 * 1024; // 1 MB
 
-const phoneRegExp = /^((\\+[0-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^(\\+[0-9]{1,4}[ \\-]*)?((\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const validFileExtensions = { image: ['jpg', 'gif', 'png', 'jpeg', 'svg', 'webp'] };
 
 function isValidFileType(fileName, fileType) {
@@ -30,8 +30,4 @@ export const employeeDetailsValidation = yup.object().shape({
         .string()
         .min(2,'Atleast 2 charecters')
         .required("Required"),
-    employeeType: yup 
-        .string()
-        .min(1,"Required")
-        .required("Required")  
 })

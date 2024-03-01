@@ -25,9 +25,8 @@ const Form = ({ setDuplicateError }) => {
           resetForm();
           toast.success("successfully uploaded", {
             autoClose: 1500,
-            onClose: () => navigate("/employeeDetails"),
+            // onClose: () => navigate("/employeeDetails"),
           });
-          // navigate("/employeeDetails");
         } else if (
           response.response.data.message.includes(
             "Violation of UNIQUE KEY constraint"

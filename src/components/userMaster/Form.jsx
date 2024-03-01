@@ -16,18 +16,24 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
     if (values.authorization) {
       setRoleError(false);
       try {
-        loading(true)
+        setLoading(true)
         values.isActive = true;
         values.OpMode = "I";
         const response = await postUserMaster(values);
         if (response) {
           if (response?.data?.isSuccess) {
+            toast.success("Uploaded",{
+              autoClose:1000
+            })
             setDuplicateUser(false);
             const userId = response.data.data.match(/\d+$/)[0];
             values.userId = userId;
             handleUser(values);
             resetForm();
-          } else if (!response?.response?.data.isSuccess) {
+          } else if (response.response.data.message.includes("Violation of UNIQUE KEY constraint")) {
+            toast.error("User Exists",{
+              autoClose:1000
+            })
             setDuplicateUser(true);
           }
         }
@@ -168,7 +174,7 @@ const Form = ({ handleUser, row, setModal, updateUser, setDuplicateUser }) => {
           onBlur={handleBlur}
           className={` bg-gray-100 text-xs text-gray-400  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 outline-none `}
         >
-          <option value="" >
+          <option value="" hidden>
             Privilage
           </option>
           {roles.map((role,i) => (

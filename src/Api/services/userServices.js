@@ -72,15 +72,16 @@ export const postUserMaster = async (value) => {
       null,
       {
         headers: {
-          OpMode: value.OpMode,
-          UserId: value.userId ? value.userId : "",
-          UserName: value.userName,
-          Password: value.password,
-          Privilage: value.authorization,
-          isActive: value.isActive,
+          OpMode: value?.OpMode,
+          UserId: value?.userId ? value?.userId : "",
+          UserName: value?.userName,
+          Password: value?.password,
+          Privilage: value?.authorization,
+          isActive: value?.isActive,
         },
       }
     );
+    console.log(response)
     return response;
   } catch (err) {
     return err;

@@ -43,18 +43,8 @@ const Page = () => {
           />
         </div>
         <div className="px-4">
-          <div
-            className={`${
-              duplicateUser &&
-              `flex items-center justify-between bg-purple-400 `
-            }`}
-          >
+          <div>
             <h1 className=" xl:text-xl font-medium">User Master</h1>
-            {duplicateUser && (
-              <h1 className="xl:text-md text-rose-500 font-medium">
-                User Exists
-              </h1>
-            )}
           </div>
         </div>
         <div className="  grid md:grid-cols-6">

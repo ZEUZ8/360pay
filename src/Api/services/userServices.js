@@ -24,12 +24,12 @@ export const uploadImage = async (file) => {
 };
 
 export const deleteImage = async (file) => {
-  console.log(file)
   // { "fileNames":["638443039782161121_Screenshot 2024-02-11 at 10.57.05 PM.png"] }
   try {
     const response = await imageInstance.delete("/DeleteImages",{
       data: { fileNames: [file] },
     });
+    console.log(response,' the response')
     return response.data;
   } catch (err) {
     return err;

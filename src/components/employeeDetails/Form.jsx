@@ -154,9 +154,9 @@ const Form = ({ image, setImage }) => {
     }
   };
 
-  useEffect(()=>{
-    console.log(employeeType,' teh avleu in teh console')
-  },[employeeType])
+  // useEffect(()=>{
+  //   console.log(employeeType,' teh avleu in teh console')
+  // },[employeeType])
 
   const {
     values,

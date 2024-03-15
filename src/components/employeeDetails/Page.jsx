@@ -49,8 +49,8 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="pt-5 max-md:row-span-6 mx-12 pb-3">
-        <h1 className=" pb-3 xl:text-xl font-medium">Employee Details</h1>
+      <div className="pt-5 max-md:row-span-6 mx-5 lg:mx-12 pb-3 ">
+        <h1 className=" pt-5 pb-3  xl:text-xl font-medium">Employee Details</h1>
         <div className="p-5 bg-white rounded-xl shadow-special">
           <Form setImage={setImage} image={image} />
         </div>

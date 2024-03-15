@@ -22,7 +22,7 @@ const Page = () => {
   const handleClick = () => {
     if (selectedSuggestion) {
       toast.success(`Selected ${selectUser?.empName}`)
-      console.log(selectedSuggestion, "the selected suggestion");
+
     } else {
       toast.error("No user Found")
     }

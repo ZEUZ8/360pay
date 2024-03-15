@@ -25,7 +25,7 @@ const Form = ({ image, setImage }) => {
   //state for photo storing
   const { photo, setPhoto, name, setUserName, loading, setLoading } =
     useContext(AppContext);
-  const [wageTypes, setWageTypes] = useState(["Hourly", "Daily", "Monthly"]);
+  const [wageTypes, setWageTypes] = useState(["Hourly", "Daily","Weekly", "Monthly"]);
   const [employeeTypes, setEmployeeTypes] = useState([
     "Permanent",
     "Temporary",
@@ -65,7 +65,6 @@ const Form = ({ image, setImage }) => {
     } else {
       setPhotoError("");
       if (file) {
-        setLoading(true);
         setLoading(true);
         setPhotoName(file);
         if (photo) {
@@ -218,7 +217,7 @@ const Form = ({ image, setImage }) => {
   };
 
   return (
-    <form>
+    <form >
       <ToastContainer />
       <div
         className={`mb-4 ${

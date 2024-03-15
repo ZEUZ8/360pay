@@ -30,7 +30,7 @@ const WageDetails = ({ selectedSuggestion }) => {
         <div className="grid grid-cols-2 items-center">
           <div className="text-center text-gray-600 ">Excess Amount</div>
           <div className=" linear_gradient4 rounded-lg py-2 text-center text-white font-medium">
-            {selectedSuggestion ? `${selectedSuggestion.exceeAmount}.00 INR` : "000.00 INR"}
+            {selectedSuggestion ? `${selectedSuggestion.excessAmount}.00 INR` : "000.00 INR"}
           </div>
         </div>
 

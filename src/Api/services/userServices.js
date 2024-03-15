@@ -81,7 +81,6 @@ export const postUserMaster = async (value) => {
         },
       }
     );
-    console.log(response)
     return response;
   } catch (err) {
     return err;
